@@ -1,6 +1,4 @@
 <resources>
-    <string name="app_name">Mom for one day</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="app_name">Mamãe por um dia</string>
+    <string name="title_notifications">Notificações</string>
 </resources>

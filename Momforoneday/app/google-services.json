@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "922941245663",
+    "firebase_url": "https://mom-for-one-day.firebaseio.com",
+    "project_id": "mom-for-one-day",
+    "storage_bucket": "mom-for-one-day.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:922941245663:android:d36e44ddcbace4af",
+        "android_client_info": {
+          "package_name": "com.momforoneday.momforoneday"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "922941245663-erof2rm62mdnp2tbfhf3sfk1k8c7innl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.momforoneday.momforoneday",
+            "certificate_hash": "c4de085eb475fea5e58e407f2f05ec7449d89f3a"
+          }
+        },
+        {
+          "client_id": "922941245663-kon4gvibpjvqqkiddpjsrm2m3ku9efm7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsGBd4RI8S7GMFZv_iAQf-ULVvfw07o60"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "922941245663-kon4gvibpjvqqkiddpjsrm2m3ku9efm7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
