@@ -1,5 +1,7 @@
 package com.momforoneday.momforoneday.service;
 
+import com.momforoneday.momforoneday.model.Caregiver;
+
 import java.util.ArrayList;
 import java.util.List;
 

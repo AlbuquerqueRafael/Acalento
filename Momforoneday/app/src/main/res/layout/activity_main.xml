@@ -17,10 +17,10 @@
     </FrameLayout>
     
     <View
+        android:id="@+id/gradient_view"
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:background="#5ed9d9d9">
-
     </View>
 
     <android.support.design.widget.BottomNavigationView

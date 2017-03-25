@@ -1,4 +1,8 @@
 <resources>
-    <string name="app_name">Mamãe por um dia</string>
-    <string name="title_notifications">Notificações</string>
+    <string name="app_name">Acalento</string>
+    <string name="title_contracts">Contratos</string>
+    <string name="title_home">Horários</string>
+    <string name="title_config">Configurações</string>
+
+
 </resources>
