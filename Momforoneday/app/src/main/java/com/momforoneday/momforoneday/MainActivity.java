@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.firebase.client.Firebase;
 import com.momforoneday.momforoneday.fragment.ConfigFragment;
 import com.momforoneday.momforoneday.fragment.ContractListFragment;
 import com.momforoneday.momforoneday.fragment.ContractsFragment;

@@ -2,15 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#90e79489">
+    android:background="#c17b71">
 
     <ImageView
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:id="@+id/logo_img"
-        android:src="@drawable/common_plus_signin_btn_icon_dark_normal"/>
+        android:id="@+id/logo_img" />
 
     <TextView
         android:layout_width="wrap_content"
