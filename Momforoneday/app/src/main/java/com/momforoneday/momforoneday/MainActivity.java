@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.momforoneday.momforoneday.fragment.ConfigFragment;
+import com.momforoneday.momforoneday.fragment.ContractListFragment;
 import com.momforoneday.momforoneday.fragment.ContractsFragment;
 import com.momforoneday.momforoneday.fragment.HomeFragment;
 import com.momforoneday.momforoneday.fragment.LoginFragment;
@@ -26,6 +27,14 @@ public class MainActivity extends AppCompatActivity {
             android.support.v4.app.FragmentTransaction fragmentTransaction;
 
             switch (item.getItemId()) {
+
+                case R.id.navigation_home:
+                    fragmentTransaction =
+                            getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.content, new ContractListFragment());
+                    fragmentTransaction.commit();
+                    return true;
+
                 case R.id.navigation_contracts:
                     fragmentTransaction =
                             getSupportFragmentManager().beginTransaction();
@@ -33,19 +42,12 @@ public class MainActivity extends AppCompatActivity {
                     fragmentTransaction.commit();
                     return true;
 
-                case R.id.navigation_home:
-                    fragmentTransaction =
-                            getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.content, new HomeFragment());
-                    fragmentTransaction.commit();
-                    return true;
-
-                case R.id.navigation_config:
+               /*case R.id.navigation_config:
                     fragmentTransaction =
                             getSupportFragmentManager().beginTransaction();
                     fragmentTransaction.replace(R.id.content, new ConfigFragment());
                     fragmentTransaction.commit();
-                    return true;
+                    return true;*/
             }
 
             return false;
@@ -60,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
 
         navigationBar = (BottomNavigationView) findViewById(R.id.navigation);
         navigationBar.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        mOnNavigationItemSelectedListener.onNavigationItemSelected(navigationBar.getMenu().findItem(R.id.navigation_home));
+
 
         gradientView = findViewById(R.id.gradient_view);
 
@@ -76,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean isAuthenticated(){
-        return false;
+        return true;
     }
 
 }

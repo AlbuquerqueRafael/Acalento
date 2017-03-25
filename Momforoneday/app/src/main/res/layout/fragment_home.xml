@@ -7,7 +7,7 @@
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:background="@color/toolbarColors"
+        android:background="@color/colorPrimaryDark"
         android:id="@+id/my_toolbar">
 
         <RelativeLayout

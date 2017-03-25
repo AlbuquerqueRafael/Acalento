@@ -13,7 +13,7 @@ public class Caregiver {
     private String _email;
     private String _telephone;
     private int _age;
-    private List<String> _comments;
+    private List<Comment> _comments;
     private int _rating;
     private Contract _contract;
 
@@ -66,11 +66,11 @@ public class Caregiver {
         this._age = _age;
     }
 
-    public List<String> getComments() {
+    public List<Comment> getComments() {
         return _comments;
     }
 
-    public void setComments(List<String> _comments) {
+    public void setComments(List<Comment> _comments) {
         this._comments = _comments;
     }
 

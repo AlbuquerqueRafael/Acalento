@@ -15,7 +15,7 @@
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             android:id="@+id/toolbar_contratos"
             app:layout_scrollFlags="scroll|enterAlways"
-            android:background="@color/colorPrimary"
+            android:background="@color/colorPrimaryDark"
             android:layout_marginLeft="-30px"
             app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
@@ -24,7 +24,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                app:backgroundTint="@color/colorPrimary"
+                app:backgroundTint="@color/colorPrimaryDark"
                 app:borderWidth="0dp"
                 app:elevation="0dp"
                 app:fabSize="mini"
@@ -42,7 +42,7 @@
                 android:textColor="@android:color/white"
                 android:layout_gravity="center_vertical"/>
 
-            <android.support.design.widget.FloatingActionButton
+            <!--<android.support.design.widget.FloatingActionButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/filter_btn"
@@ -52,9 +52,9 @@
                 android:layout_marginRight="10dp"
                 app:rippleColor="@color/colorPrimaryDark"
                 app:fabSize="mini"
-                app:backgroundTint="@color/colorPrimary"
+                app:backgroundTint="@color/colorPrimaryDark"
                 app:elevation="0dp"
-                app:borderWidth="0dp"/>
+                app:borderWidth="0dp"/>-->
 
         </android.support.v7.widget.Toolbar>
 

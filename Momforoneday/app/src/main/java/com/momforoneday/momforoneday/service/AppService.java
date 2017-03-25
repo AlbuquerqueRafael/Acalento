@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 
 import com.momforoneday.momforoneday.fragment.ContractsFragment;
 import com.momforoneday.momforoneday.model.Caregiver;
+import com.momforoneday.momforoneday.model.Comment;
 import com.momforoneday.momforoneday.model.Notification;
 import com.momforoneday.momforoneday.model.User;
 
@@ -34,9 +35,17 @@ public class AppService {
     public static List<Caregiver> getCuidadores(){
 
         Caregiver car;
+        List<Comment> comments;
 
         for (int i = 0; i < 10; i++) {
             car = new Caregiver("Nome " + i, "Email " + i, "Telefone " + i, i + 20);
+            comments = new ArrayList<>();
+            for (int j = 0; j < 10; j++) {
+                Comment comment = new Comment("Nome " + j, "Topp");
+                comments.add(comment);
+            }
+
+            car.setComments(comments);
             caregivers.add(car);
         }
 

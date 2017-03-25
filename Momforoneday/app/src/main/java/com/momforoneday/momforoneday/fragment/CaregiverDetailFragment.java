@@ -1,5 +1,6 @@
 package com.momforoneday.momforoneday.fragment;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -7,7 +8,9 @@ import android.support.v7.widget.AppCompatButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -64,9 +67,12 @@ public class CaregiverDetailFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (v.getId() == R.id.comments){
-                    Toast.makeText(getContext(), "Comentários", Toast.LENGTH_SHORT).show();
+                    android.support.v4.app.FragmentTransaction fragmentTransaction =
+                            getActivity().getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.content, new CommentFragment());
+                    fragmentTransaction.commit();
                 } else {
-                    Toast.makeText(getContext(), "Avaliações", Toast.LENGTH_SHORT).show();
+                    showRatingDialog();
                 }
             }
         };
@@ -97,5 +103,31 @@ public class CaregiverDetailFragment extends Fragment {
         });
 
         return rootView;
+    }
+
+    private void showRatingDialog(){
+        final Dialog inputDialog = new Dialog(getContext());
+        inputDialog.setTitle("Inserir Endereço");
+        inputDialog.setContentView(R.layout.rating_dialog);
+
+        final RatingBar ratingBar = (RatingBar) inputDialog.findViewById(R.id.rating_bar);
+        final Button okButton = (Button) inputDialog.findViewById(R.id.ok_button);
+        final Button cancelButton = (Button) inputDialog.findViewById(R.id.cancel_button);
+
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                inputDialog.dismiss();
+            }
+        });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                inputDialog.dismiss();
+            }
+        });
+
+        inputDialog.show();
     }
 }
