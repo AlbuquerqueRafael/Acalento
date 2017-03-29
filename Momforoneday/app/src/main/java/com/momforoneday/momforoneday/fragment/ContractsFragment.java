@@ -20,6 +20,7 @@ import com.momforoneday.momforoneday.model.Caregiver;
 import com.momforoneday.momforoneday.model.Notification;
 import com.momforoneday.momforoneday.service.AppService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -94,7 +95,7 @@ public class ContractsFragment extends Fragment {
 
             recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler);
 
-            List<Notification> notifications = AppService.getNotifications();
+            List<Notification> notifications = new ArrayList<>();
 
             recyclerView.setAdapter(new NotificationAdapter(notifications, getContext()));
 

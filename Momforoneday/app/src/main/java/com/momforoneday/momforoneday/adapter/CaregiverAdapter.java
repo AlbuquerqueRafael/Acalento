@@ -1,6 +1,8 @@
 package com.momforoneday.momforoneday.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.RecyclerView;
@@ -8,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +22,7 @@ import com.momforoneday.momforoneday.model.Caregiver;
 import com.momforoneday.momforoneday.model.Contract;
 import com.momforoneday.momforoneday.model.User;
 import com.momforoneday.momforoneday.service.AppService;
+import com.momforoneday.momforoneday.util.CircleTransform;
 
 import java.util.List;
 
@@ -70,6 +74,8 @@ public class CaregiverAdapter extends RecyclerView.Adapter {
         holder.caregiverName.setText(currentCaregiver.getName());
         holder.caregiverAge.setText(String.valueOf(currentCaregiver.getAge()) + " anos");
 
+        holder.caregiverImg.setImageBitmap(AppService.getImage());
+
         holder.contractCaregiver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,6 +101,7 @@ class MyHolder extends RecyclerView.ViewHolder {
 
     final TextView caregiverName;
     final TextView caregiverAge;
+    final ImageView caregiverImg;
     final AppCompatButton contractCaregiver;
 
     public MyHolder(View view) {
@@ -103,6 +110,7 @@ class MyHolder extends RecyclerView.ViewHolder {
         caregiverName = (TextView) view.findViewById(R.id.caregiver_name);
         caregiverAge = (TextView) view.findViewById(R.id.caregiver_age);
         contractCaregiver = (AppCompatButton) view.findViewById(R.id.contract_btn);
+        caregiverImg = (ImageView) view.findViewById(R.id.caregiver_img);
 
     }
 

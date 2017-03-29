@@ -13,6 +13,8 @@ public class Comment {
     private String date;
     private String comment;
 
+    public Comment(){}
+
     public Comment(String owner, String comment) {
         this.owner = owner;
         this.comment = comment;
@@ -31,14 +33,8 @@ public class Comment {
         return date;
     }
 
-    public void setDate(Date date) {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        String dateString = formatter.format(date);
-
-        formatter = new SimpleDateFormat("HH:mm");
-        String hourString = formatter.format(date);
-
-        this.date = dateString + " às " + hourString;
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getOwner() {

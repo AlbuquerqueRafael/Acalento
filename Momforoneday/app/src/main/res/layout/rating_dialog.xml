@@ -9,9 +9,9 @@
         android:layout_height="50dp"
         android:textAlignment="center"
         android:gravity="center"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/colorPrimary"
         android:text="Avaliação"
-        android:textColor="@android:color/black"
+        android:textColor="@android:color/white"
         android:textSize="20sp"/>
 
     <LinearLayout
@@ -25,6 +25,7 @@
             android:layout_height="wrap_content"
             android:scaleY="0.7"
             android:scaleX="0.7"
+            android:stepSize="1.0"
             android:id="@+id/rating_bar"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"

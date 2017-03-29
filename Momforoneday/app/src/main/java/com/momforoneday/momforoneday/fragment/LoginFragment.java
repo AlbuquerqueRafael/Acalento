@@ -36,13 +36,6 @@ public class LoginFragment extends Fragment {
 
         rootView = inflater.inflate(R.layout.fragment_login, container, false);
 
-        loginButton = (AppCompatButton) rootView.findViewById(R.id.login_btn);
-        nameTextView = (TextView) rootView.findViewById(R.id.name_textview);
-        logoImageView = (ImageView) rootView.findViewById(R.id.logo_img);
-        sloganTextView = (TextView) rootView.findViewById(R.id.slogan_textview);
-        layoutLogin = (LinearLayout) rootView.findViewById(R.id.layout_login);
-        registerTextView = (TextView) rootView.findViewById(R.id.register_textview);
-
         registerTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,8 +56,6 @@ public class LoginFragment extends Fragment {
                     layoutLogin.animate().scaleX(1f).scaleY(1f).y(logoImageView.getY() + 80f).start();
                     layoutLogin.setVisibility(View.VISIBLE);
                 } else {
-
-                    AppService.setCurrentUser("Gabriel Guimarães");
 
                     getActivity().findViewById(R.id.navigation).setVisibility(View.VISIBLE);
                     getActivity().findViewById(R.id.gradient_view).setVisibility(View.VISIBLE);

@@ -1,6 +1,7 @@
 package com.momforoneday.momforoneday.fragment;
 
 import android.os.Bundle;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,9 +13,12 @@ import android.widget.Toast;
 
 import com.momforoneday.momforoneday.R;
 import com.momforoneday.momforoneday.adapter.CaregiverAdapter;
+import com.momforoneday.momforoneday.controller.FirebaseController;
+import com.momforoneday.momforoneday.controller.OnCaregiverGetDataListener;
 import com.momforoneday.momforoneday.model.Caregiver;
 import com.momforoneday.momforoneday.service.AppService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,8 +30,9 @@ public class ContractListFragment extends Fragment {
     private View rootView;
     private RecyclerView recyclerView;
     private List<Caregiver> caregivers;
-    private FloatingActionButton filterBtn;
     private FloatingActionButton backBtn;
+    private BottomNavigationView navigationBar;
+    private View gradientView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,25 +51,54 @@ public class ContractListFragment extends Fragment {
             }
         });
 
-        filterBtn = (FloatingActionButton) rootView.findViewById(R.id.filter_btn);
-        filterBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(), "Filtrar", Toast.LENGTH_SHORT).show();
-            }
-        });
+
+        navigationBar = (BottomNavigationView) getActivity().findViewById(R.id.navigation);
+        gradientView = getActivity().findViewById(R.id.gradient_view);
+
+        navigationBar.setVisibility(View.VISIBLE);
+        gradientView.setVisibility(View.VISIBLE);
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler);
 
-        caregivers = AppService.getCuidadores();
+        if (AppService.getCaregiversList().size() == 0) {
+            initCaregiverList();
+        } else {
+            recyclerView.setAdapter(new CaregiverAdapter(AppService.getCaregiversList(), getContext()));
 
-        recyclerView.setAdapter(new CaregiverAdapter(caregivers, getContext()));
+            RecyclerView.LayoutManager layout = new LinearLayoutManager(getContext(),
+                    LinearLayoutManager.VERTICAL, false);
 
-        RecyclerView.LayoutManager layout = new LinearLayoutManager(getContext(),
-                LinearLayoutManager.VERTICAL, false);
-
-        recyclerView.setLayoutManager(layout);
+            recyclerView.setLayoutManager(layout);
+        }
 
         return rootView;
+    }
+
+    private void initCaregiverList() {
+
+        FirebaseController.retrieveCaregivers(new OnCaregiverGetDataListener() {
+            @Override
+            public void onStart() {
+            }
+
+            @Override
+            public void onSuccess(List<Caregiver> lista) {
+                caregivers = new ArrayList<>();
+
+                for (Caregiver c : lista) {
+                    caregivers.add(c);
+                }
+
+                recyclerView.setAdapter(new CaregiverAdapter(caregivers, getContext()));
+
+                AppService.setCaregiversList(caregivers);
+
+                RecyclerView.LayoutManager layout = new LinearLayoutManager(getContext(),
+                        LinearLayoutManager.VERTICAL, false);
+
+                recyclerView.setLayoutManager(layout);
+
+            }
+        });
     }
 }

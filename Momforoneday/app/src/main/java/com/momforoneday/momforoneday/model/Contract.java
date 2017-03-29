@@ -6,41 +6,43 @@ package com.momforoneday.momforoneday.model;
 
 public class Contract {
 
-    private ContractStatus _status;
-    private Caregiver _caregiver;
-    private User _user;
+    private ContractStatus status;
+    private Caregiver caregiver;
+    private User user;
+
+    public Contract(){}
 
     public Contract(Caregiver _caregiver, User _user) {
-        this._caregiver = _caregiver;
-        this._user = _user;
-        this._status = ContractStatus.CONTRACT_PENDING;
+        this.caregiver = _caregiver;
+        this.user = _user;
+        this.status = ContractStatus.CONTRACT_PENDING;
     }
 
     public Caregiver getCaregiver() {
-        return _caregiver;
+        return caregiver;
     }
 
     public void setCaregiver(Caregiver _caregiver) {
-        this._caregiver = _caregiver;
+        this.caregiver = _caregiver;
     }
 
     public User getUser() {
-        return _user;
+        return user;
     }
 
     public void setUser(User _user) {
-        this._user = _user;
+        this.user = _user;
     }
 
     public String getStatus(){
 
-        if (_status == ContractStatus.CONTRACT_PENDING){
+        if (status == ContractStatus.CONTRACT_PENDING){
             return "Pendente";
-        } else if (_status == ContractStatus.CONTRACT_FINISHED) {
+        } else if (status == ContractStatus.CONTRACT_FINISHED) {
             return "Finalizado";
-        } else if (_status == ContractStatus.CONTRACT_REJECTED) {
+        } else if (status == ContractStatus.CONTRACT_REJECTED) {
             return "Rejeitado";
-        } else if (_status == ContractStatus.CONTRACT_RUNNING) {
+        } else if (status == ContractStatus.CONTRACT_RUNNING) {
             return "Em andamento";
         }
 
@@ -48,7 +50,7 @@ public class Contract {
     }
 
     public void setStatus(ContractStatus newStatus) {
-        this._status = newStatus;
+        this.status = newStatus;
     }
 
 
