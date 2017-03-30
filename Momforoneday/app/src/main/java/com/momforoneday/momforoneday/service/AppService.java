@@ -23,6 +23,8 @@ public class AppService {
     private static Fragment previousFragment;
     private static List<Caregiver> caregiversList = new ArrayList<>();
     private static Bitmap image;
+    private static User currentUser;
+    private static String lastRequestedPhoto;
 
     public static void setSelectedCaregiver(Caregiver caregiver){
         selectedCaregiver = caregiver;
@@ -63,4 +65,19 @@ public class AppService {
     public static Bitmap getImage() {
         return image;
     }
+
+    public static User getCurrentUser() {
+        currentUser = new User("Gabriel Guimarães", "gabrielguimaraes@gmail.com");
+        return currentUser;
+    }
+
+    public static void setLastRequestedPhoto(String url) {
+        lastRequestedPhoto = url;
+    }
+
+    public static String getLastRequestedPhoto(){
+        return lastRequestedPhoto;
+    }
+
+
 }

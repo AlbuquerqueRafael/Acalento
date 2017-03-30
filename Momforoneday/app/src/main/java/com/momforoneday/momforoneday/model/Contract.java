@@ -1,56 +1,70 @@
 package com.momforoneday.momforoneday.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by gabrielguimo on 22/03/17.
  */
 
 public class Contract {
 
-    private ContractStatus status;
-    private Caregiver caregiver;
+    private String status;
+    private String caregiver;
     private User user;
+    private String schedule;
+    private List<Notification> notifications;
 
-    public Contract(){}
-
-    public Contract(Caregiver _caregiver, User _user) {
-        this.caregiver = _caregiver;
-        this.user = _user;
-        this.status = ContractStatus.CONTRACT_PENDING;
+    public Contract(){
+        this.notifications = new ArrayList<>();
     }
 
-    public Caregiver getCaregiver() {
+    public Contract(String caregiver, User user, String schedule) {
+        this.caregiver = caregiver;
+        this.user = user;
+        this.schedule = schedule;
+        this.status = "Pendente";
+        this.notifications = new ArrayList<>();
+    }
+
+    public List<Notification> getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(List<Notification> notifications) {
+        this.notifications = notifications;
+    }
+
+    public String getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(String schedule) {
+        this.schedule = schedule;
+    }
+
+    public String getCaregiver() {
         return caregiver;
     }
 
-    public void setCaregiver(Caregiver _caregiver) {
-        this.caregiver = _caregiver;
+    public void setCaregiver(String caregiver) {
+        this.caregiver = caregiver;
     }
 
     public User getUser() {
         return user;
     }
 
-    public void setUser(User _user) {
-        this.user = _user;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getStatus(){
-
-        if (status == ContractStatus.CONTRACT_PENDING){
-            return "Pendente";
-        } else if (status == ContractStatus.CONTRACT_FINISHED) {
-            return "Finalizado";
-        } else if (status == ContractStatus.CONTRACT_REJECTED) {
-            return "Rejeitado";
-        } else if (status == ContractStatus.CONTRACT_RUNNING) {
-            return "Em andamento";
-        }
-
-        return "";
+        return status;
     }
 
-    public void setStatus(ContractStatus newStatus) {
-        this.status = newStatus;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
 

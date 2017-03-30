@@ -15,4 +15,12 @@ public class User {
         this.name = _name;
         this.email = _email;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
 }

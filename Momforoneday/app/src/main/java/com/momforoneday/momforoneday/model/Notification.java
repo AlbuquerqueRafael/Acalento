@@ -12,15 +12,15 @@ public class Notification {
 
     private String text;
     private String date;
-    private Caregiver sender;
+    private String sender;
     private User receiver;
 
     public Notification(){}
 
-    public Notification(String _text, Caregiver _sender, User _receiver) {
-        this.text = _text;
-        this.sender = _sender;
-        this.receiver = _receiver;
+    public Notification(String text, String sender, User receiver) {
+        this.text = text;
+        this.sender = sender;
+        this.receiver = receiver;
 
         Date date = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
@@ -36,37 +36,31 @@ public class Notification {
         return text;
     }
 
-    public void setText(String _text) {
-        this.text = _text;
+    public void setText(String text) {
+        this.text = text;
     }
 
     public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        String dateString = formatter.format(date);
-
-        formatter = new SimpleDateFormat("HH:mm");
-        String hourString = formatter.format(date);
-
-        this.date = dateString + " às " + hourString;
+    public void setDate(String date) {
+        this.date = date;
     }
 
-    public Caregiver getSender() {
+    public String getSender() {
         return sender;
     }
 
-    public void setSender(Caregiver _sender) {
-        this.sender = _sender;
+    public void setSender(String sender) {
+        this.sender = sender;
     }
 
     public User getReceiver() {
         return receiver;
     }
 
-    public void setReceiver(User _receiver) {
-        this.receiver = _receiver;
+    public void setReceiver(User receiver) {
+        this.receiver = receiver;
     }
 }

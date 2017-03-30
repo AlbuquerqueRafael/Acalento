@@ -5,7 +5,6 @@ package com.momforoneday.momforoneday.controller;
  */
 
 import android.util.Log;
-import android.widget.Toast;
 
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
@@ -13,14 +12,19 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.momforoneday.momforoneday.model.Caregiver;
-import com.momforoneday.momforoneday.model.Comment;
+import com.momforoneday.momforoneday.model.Contract;
+import com.momforoneday.momforoneday.model.Notification;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class FirebaseController {
 
     private final static String CAREGIVERS = "caregivers";
+    private final static String CONTRACT = "contract";
+    private final static String NOTIFICATIONS = "notifications";
+    private final static String PHOTOS = "photos";
     public static final String FIREBASE_URL = "https://mom-for-one-day.firebaseio.com/";
     private static Firebase firebase;
 
@@ -31,34 +35,87 @@ public class FirebaseController {
         return firebase;
     }
 
+    public static void endContract(Contract contract) {
+        Firebase firebaseRef = getFirebase();
+        Firebase caregiverReff = firebaseRef.child(CAREGIVERS).child(contract.getCaregiver()).child(CONTRACT);
+
+        caregiverReff.removeValue();
+
+    }
+
+    public static void setContract(Contract contract) {
+        Firebase firebaseRef = getFirebase();
+        Firebase caregiverReff = firebaseRef.child(CAREGIVERS).child(contract.getCaregiver()).child(CONTRACT);
+
+        caregiverReff.setValue(contract);
+
+    }
+
+    public static void sendNotification(Caregiver caregiver, Notification notification){
+
+        Firebase firebaseRef = getFirebase();
+        Firebase notificationReff = firebaseRef.child(CAREGIVERS).child(notification.getSender()).child(CONTRACT).child(NOTIFICATIONS);
+
+        List<Notification> notifications = caregiver.getContract().getNotifications();
+        notifications.add(notification);
+
+        notificationReff.setValue(notifications);
+
+    }
+
     public static void retrieveCaregivers(final OnCaregiverGetDataListener listener){
         Firebase firebaseRef = getFirebase();
         Firebase caregiverReff = firebaseRef.child(CAREGIVERS);
 
         caregiverReff.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot snapshot) {
+            public void onDataChange(DataSnapshot dataSnapshot) {
                 List<Caregiver> lista = new ArrayList<>();
 
-                for (DataSnapshot care : snapshot.getChildren()){
+                for (DataSnapshot care : dataSnapshot.getChildren()){
                     Caregiver caregiver = care.getValue(Caregiver.class);
                     lista.add(caregiver);
                 }
 
                 listener.onSuccess(lista);
-
             }
 
-            @Override public void onCancelled(FirebaseError error) { }
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
         });
 
-        caregiverReff.addChildEventListener(new ChildEventListener() {
+    }
 
+    public static void saveCaregiver(Caregiver caregiver){
+        Firebase firebaseRef = getFirebase();
+        Firebase caregiverReff = firebaseRef.child(CAREGIVERS);
+
+
+        caregiverReff.child(caregiver.getName()).setValue(caregiver);
+
+    }
+
+    public static void requestImage(final OnGetPhotoListener listener) {
+        Firebase firebaseRef = getFirebase();
+        final List<String> photos = new ArrayList<String>();
+
+        firebaseRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
+                if(dataSnapshot.getKey().equals(PHOTOS)){
+                    Iterable<DataSnapshot> orderChildren = dataSnapshot.getChildren();
 
-                Iterable<DataSnapshot> productChildren = dataSnapshot.getChildren();
+                    for (DataSnapshot ord : orderChildren){
+                        photos.add(ord.getValue(String.class));
+                    }
 
+                    Random randomizer = new Random();
+                    String randomUrl = photos.get(randomizer.nextInt(photos.size()));
+
+                    listener.onSuccess(randomUrl);
+                }
 
             }
 
@@ -74,27 +131,34 @@ public class FirebaseController {
             @Override
             public void onCancelled(FirebaseError firebaseError) {}
 
-
         });
 
     }
 
-    public static void saveCaregiver(Caregiver caregiver){
+    public static void retrieveNotifications(Caregiver contractedCaregiver, final OnNotificationGetDataListener listener) {
+
         Firebase firebaseRef = getFirebase();
-        Firebase caregiverReff = firebaseRef.child(CAREGIVERS);
+        Firebase caregiverReff = firebaseRef.child(CAREGIVERS).child(contractedCaregiver.getName()).child(CONTRACT).child(NOTIFICATIONS);
 
+        caregiverReff.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                List<Notification> lista = new ArrayList<>();
 
-        caregiverReff.child(caregiver.getName()).setValue(caregiver);
+                for (DataSnapshot noti : dataSnapshot.getChildren()){
+                    Notification notification = noti.getValue(Notification.class);
+                    lista.add(notification);
+                }
+
+                listener.onSuccess(lista);
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
 
     }
-
-    public static void updateCaregiver(Caregiver caregiver) {
-        Firebase firebaseRef = getFirebase();
-
-        Firebase caregiverReff = firebaseRef.child(CAREGIVERS);
-
-        caregiverReff.child(caregiver.getName()).setValue(caregiver);
-
-    }
-
 }

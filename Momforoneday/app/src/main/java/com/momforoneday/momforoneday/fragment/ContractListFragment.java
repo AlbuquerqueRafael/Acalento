@@ -6,6 +6,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.momforoneday.momforoneday.adapter.CaregiverAdapter;
 import com.momforoneday.momforoneday.controller.FirebaseController;
 import com.momforoneday.momforoneday.controller.OnCaregiverGetDataListener;
 import com.momforoneday.momforoneday.model.Caregiver;
+import com.momforoneday.momforoneday.model.Notification;
 import com.momforoneday.momforoneday.service.AppService;
 
 import java.util.ArrayList;
@@ -87,6 +89,11 @@ public class ContractListFragment extends Fragment {
 
                 for (Caregiver c : lista) {
                     caregivers.add(c);
+                    if (c.getContract() != null) {
+                        if (c.getContract().getUser().getEmail().equals(AppService.getCurrentUser().getEmail())) {
+                            AppService.setContractedCaregiver(c);
+                        }
+                    }
                 }
 
                 recyclerView.setAdapter(new CaregiverAdapter(caregivers, getContext()));
