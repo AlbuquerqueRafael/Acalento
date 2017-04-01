@@ -3,6 +3,7 @@ package com.momforoneday.momforoneday.fragment;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -47,6 +48,8 @@ public class ContractsFragment extends Fragment {
     private ImageView requestedImage;
     private TextView recentNotifications;
     private List<Notification> notificationList;
+    private BottomNavigationView navigationBar;
+    private View gradientView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,6 +66,12 @@ public class ContractsFragment extends Fragment {
         notificationText = (TextView) rootView.findViewById(R.id.notification_text);
         notificationDate = (TextView) rootView.findViewById(R.id.notification_date);
         notificationLayout = (RelativeLayout) rootView.findViewById(R.id.notification_layout);
+
+        navigationBar = (BottomNavigationView) getActivity().findViewById(R.id.navigation);
+        gradientView = getActivity().findViewById(R.id.gradient_view);
+
+        navigationBar.setVisibility(View.VISIBLE);
+        gradientView.setVisibility(View.VISIBLE);
 
         recentNotifications.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -179,7 +188,7 @@ public class ContractsFragment extends Fragment {
 
 
     private void requestImage(){
-        FirebaseController.requestImage(new OnGetPhotoListener() {
+        FirebaseController.requestImage(AppService.getContractedCaregiver().getContract(), new OnGetPhotoListener() {
             @Override
             public void onStart() {
 
@@ -205,16 +214,15 @@ public class ContractsFragment extends Fragment {
 
         String status = caregiver.getContract().getStatus();
 
-        if (status == "Pendente") {
-            contractStatus.setColorFilter(Color.CYAN, PorterDuff.Mode.MULTIPLY );
-
-        } else if (status == "Rejeitado") {
-            contractStatus.setColorFilter(Color.RED, PorterDuff.Mode.MULTIPLY );
-        } else if (status == "Finalizado") {
-            contractStatus.setColorFilter(Color.LTGRAY, PorterDuff.Mode.MULTIPLY );
-        } else if (status == "Em andamento") {
-            contractStatus.setColorFilter(Color.GREEN, PorterDuff.Mode.MULTIPLY );
-        }
+//        if (status == "Pendente") {
+//            contractStatus.setColorFilter(Color.CYAN, PorterDuff.Mode.MULTIPLY );
+//        } else if (status == "Rejeitado") {
+//            contractStatus.setColorFilter(Color.RED, PorterDuff.Mode.MULTIPLY );
+//        } else if (status == "Finalizado") {
+//            contractStatus.setColorFilter(Color.LTGRAY, PorterDuff.Mode.MULTIPLY );
+//        } else if (status == "Em andamento") {
+//            contractStatus.setColorFilter(Color.GREEN, PorterDuff.Mode.MULTIPLY );
+//        }
 
     }
 }

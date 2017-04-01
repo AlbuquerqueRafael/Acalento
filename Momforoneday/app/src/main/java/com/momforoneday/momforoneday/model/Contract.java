@@ -14,6 +14,7 @@ public class Contract {
     private User user;
     private String schedule;
     private List<Notification> notifications;
+    private String photoURL;
 
     public Contract(){
         this.notifications = new ArrayList<>();
@@ -25,6 +26,15 @@ public class Contract {
         this.schedule = schedule;
         this.status = "Pendente";
         this.notifications = new ArrayList<>();
+        this.photoURL = "";
+    }
+
+    public String getPhotoURL() {
+        return photoURL;
+    }
+
+    public void setPhotoURL(String photoURL) {
+        this.photoURL = photoURL;
     }
 
     public List<Notification> getNotifications() {

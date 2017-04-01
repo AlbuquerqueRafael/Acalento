@@ -1,12 +1,17 @@
 package com.momforoneday.momforoneday.fragment;
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +24,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gigamole.navigationtabstrip.NavigationTabStrip;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.UploadTask;
 import com.momforoneday.momforoneday.R;
 import com.momforoneday.momforoneday.controller.FirebaseController;
 import com.momforoneday.momforoneday.model.Caregiver;
@@ -29,6 +40,8 @@ import com.momforoneday.momforoneday.service.AppService;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by gabrielguimo on 22/03/17.
@@ -107,6 +120,7 @@ public class CaregiverDetailFragment extends Fragment {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 android.support.v4.app.FragmentTransaction fragmentTransaction =
                         getActivity().getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.content, AppService.getPreviousFragment());
@@ -134,7 +148,12 @@ public class CaregiverDetailFragment extends Fragment {
         contractButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showContractDialog();
+
+                if (AppService.getContractedCaregiver() == null) {
+                    showContractDialog();
+                } else {
+                    Toast.makeText(getContext(), "Você já possui um contrato ativo!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -227,6 +246,8 @@ public class CaregiverDetailFragment extends Fragment {
                 RadioButton radioButton = (RadioButton) radioGroup.findViewById(radioButtonID);
 
                 contractCaregiver(radioButton.getText().toString());
+
+                inputDialog.dismiss();
             }
         });
 
@@ -272,6 +293,7 @@ public class CaregiverDetailFragment extends Fragment {
     }
 
     private void contractCaregiver(String schedule){
+
         User currentUser = AppService.getCurrentUser();
         Contract contract = new Contract(selectedCaregiver.getName(), currentUser, schedule);
 
@@ -280,7 +302,7 @@ public class CaregiverDetailFragment extends Fragment {
         selectedCaregiver.setContract(contract);
         AppService.setContractedCaregiver(selectedCaregiver);
 
-        Toast.makeText(getContext(), "Contratou " + selectedCaregiver.getName() + " para " + schedule , Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Contratou " + selectedCaregiver.getName() + " para " + schedule, Toast.LENGTH_SHORT).show();
 
     }
 

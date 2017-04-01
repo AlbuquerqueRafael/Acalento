@@ -105,7 +105,11 @@ public class CaregiverAdapter extends RecyclerView.Adapter {
         holder.contractCaregiver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showContractDialog(currentCaregiver);
+                if (AppService.getContractedCaregiver() == null) {
+                    showContractDialog(currentCaregiver);
+                } else {
+                    Toast.makeText(context, "Você já possui um contrato ativo!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -141,6 +145,7 @@ public class CaregiverAdapter extends RecyclerView.Adapter {
                 RadioButton radioButton = (RadioButton) radioGroup.findViewById(radioButtonID);
 
                 contractCaregiver(currentCaregiver, radioButton.getText().toString());
+                inputDialog.dismiss();
             }
         });
 
@@ -186,6 +191,7 @@ public class CaregiverAdapter extends RecyclerView.Adapter {
     }
 
     private void contractCaregiver(Caregiver currentCaregiver, String schedule){
+
         User currentUser = AppService.getCurrentUser();
         Contract contract = new Contract(currentCaregiver.getName(), currentUser, schedule);
 
@@ -194,7 +200,7 @@ public class CaregiverAdapter extends RecyclerView.Adapter {
         currentCaregiver.setContract(contract);
         AppService.setContractedCaregiver(currentCaregiver);
 
-        Toast.makeText(context, "Contratou " + currentCaregiver.getName() + " para " + schedule , Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "Contratou " + currentCaregiver.getName() + " para " + schedule, Toast.LENGTH_SHORT).show();
 
     }
 

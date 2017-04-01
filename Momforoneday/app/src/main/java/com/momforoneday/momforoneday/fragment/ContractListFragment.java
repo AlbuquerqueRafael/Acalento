@@ -53,7 +53,6 @@ public class ContractListFragment extends Fragment {
             }
         });
 
-
         navigationBar = (BottomNavigationView) getActivity().findViewById(R.id.navigation);
         gradientView = getActivity().findViewById(R.id.gradient_view);
 
@@ -92,6 +91,8 @@ public class ContractListFragment extends Fragment {
                     if (c.getContract() != null) {
                         if (c.getContract().getUser().getEmail().equals(AppService.getCurrentUser().getEmail())) {
                             AppService.setContractedCaregiver(c);
+                        } else {
+                            AppService.setContractedCaregiver(null);
                         }
                     }
                 }
