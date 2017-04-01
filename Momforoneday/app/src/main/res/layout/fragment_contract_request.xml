@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <android.support.v7.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                android:id="@+id/toolbar_solicitacoes"
+                app:layout_scrollFlags="scroll|enterAlways"
+                android:background="@color/colorPrimary"
+                android:layout_marginLeft="-50px"
+                app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/back_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:backgroundTint="@color/colorPrimary"
+                        app:borderWidth="0dp"
+                        app:elevation="0dp"
+                        app:fabSize="mini"
+                        app:rippleColor="@color/colorPrimary"
+                        android:alpha="0.8"
+                        android:src="@drawable/ic_keyboard_arrow_left_black_24dp"
+                        android:tint="@android:color/white"
+                        android:layout_centerVertical="true"
+                        android:visibility="gone"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="15dp"
+                        android:text="SOLICITAÇÕES"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"/>
+
+                </RelativeLayout>
+            </android.support.v7.widget.Toolbar>
+
+        </android.support.design.widget.AppBarLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="#9fc4c4c4">
+        </View>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:id="@+id/request_view"
+            android:visibility="gone"
+            android:weightSum="1">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="3.25">
+
+                <ImageView
+                    android:id="@+id/caregiver_img"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:padding="3dp"
+                    android:src="@drawable/ic_account_circle_black_24dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+
+                <TextView
+                    android:id="@+id/caregiver_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_toRightOf="@id/caregiver_img"
+                    android:text="{{ nome }}"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/accept_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/reject_btn"
+                    android:layout_alignBottom="@+id/reject_btn"
+                    android:layout_toLeftOf="@+id/reject_btn"
+                    android:layout_toStartOf="@+id/reject_btn"
+                    android:background="@android:color/white"
+                    android:padding="10dp"
+                    android:stateListAnimator="@null"
+                    android:text="Aceitar"
+                    android:textColor="#00b615" />
+
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/reject_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/caregiver_age"
+                    android:background="@android:color/white"
+                    android:padding="10dp"
+                    android:stateListAnimator="@null"
+                    android:text="Rejeitar"
+                    android:textColor="#b60000" />
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/gradient_view"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="#32d9d9d9">
+            </View>
+
+        </LinearLayout>
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>

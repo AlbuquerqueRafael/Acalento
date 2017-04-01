@@ -70,7 +70,6 @@ public class FirebaseController {
         Firebase caregiverReff = firebaseRef.child(CAREGIVERS).child(contract.getCaregiver()).child(CONTRACT);
 
         caregiverReff.removeValue();
-
     }
 
     public static void setContract(Contract contract) {
@@ -78,7 +77,6 @@ public class FirebaseController {
         Firebase caregiverReff = firebaseRef.child(CAREGIVERS).child(contract.getCaregiver()).child(CONTRACT);
 
         caregiverReff.setValue(contract);
-
     }
 
     public static void sendNotification(Caregiver caregiver, Notification notification){
@@ -90,7 +88,6 @@ public class FirebaseController {
         notifications.add(notification);
 
         notificationReff.setValue(notifications);
-
     }
 
     public static void retrieveCaregivers(final OnCaregiverGetDataListener listener){
@@ -124,7 +121,6 @@ public class FirebaseController {
 
 
         caregiverReff.child(caregiver.getName()).setValue(caregiver);
-
     }
 
     public static void requestImage(Contract contract, final OnGetPhotoListener listener) {
@@ -145,7 +141,6 @@ public class FirebaseController {
 
             }
         });
-
     }
 
     public static void sendImage(Contract contract, String url) {
@@ -178,7 +173,5 @@ public class FirebaseController {
 
             }
         });
-
-
     }
 }
