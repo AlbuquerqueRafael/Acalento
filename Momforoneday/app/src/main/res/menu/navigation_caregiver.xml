@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_active_contract"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="Contrato Ativo" />
+
+    <item
+        android:id="@+id/navigation_requests"
+        android:icon="@drawable/ic_receipt_black_24dp"
+        android:title="Solicitações" />
+
+    <!--<item
+        android:id="@+id/navigation_config"
+        android:icon="@drawable/ic_account_circle_black_24dp"
+        android:title="@string/title_config" />-->
+
+</menu>

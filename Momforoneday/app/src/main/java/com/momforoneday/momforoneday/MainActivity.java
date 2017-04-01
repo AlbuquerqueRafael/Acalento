@@ -11,24 +11,17 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
-import com.momforoneday.momforoneday.controller.FirebaseController;
-import com.momforoneday.momforoneday.fragment.ConfigFragment;
 import com.momforoneday.momforoneday.fragment.ContractListFragment;
+import com.momforoneday.momforoneday.fragment.ContractRequestFragment;
 import com.momforoneday.momforoneday.fragment.ContractsFragment;
-import com.momforoneday.momforoneday.fragment.HomeFragment;
 import com.momforoneday.momforoneday.fragment.LoginFragment;
-import com.momforoneday.momforoneday.model.Caregiver;
-import com.momforoneday.momforoneday.model.Comment;
-import com.momforoneday.momforoneday.model.Notification;
 import com.momforoneday.momforoneday.service.AppService;
 import com.momforoneday.momforoneday.util.CircleTransform;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView navigationBar;
+    private BottomNavigationView navigationCaregiverBar;
     private View gradientView;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -75,15 +68,67 @@ public class MainActivity extends AppCompatActivity {
 
     };
 
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationCaregiverItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+            android.support.v4.app.FragmentTransaction fragmentTransaction;
+
+            switch (item.getItemId()) {
+
+                case R.id.navigation_active_contract:
+                    fragmentTransaction =
+                            getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.content, new ContractListFragment());
+                    fragmentTransaction.commit();
+                    return true;
+
+                case R.id.navigation_requests:
+
+                    fragmentTransaction =
+                            getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.content, new ContractRequestFragment());
+                    fragmentTransaction.commit();
+                    return true;
+
+               /*case R.id.navigation_config:
+                    fragmentTransaction =
+                            getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.content, new ConfigFragment());
+                    fragmentTransaction.commit();
+                    return true;*/
+            }
+
+            return false;
+        }
+
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Firebase.setAndroidContext(this);
 
-        navigationBar = (BottomNavigationView) findViewById(R.id.navigation);
-        navigationBar.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        mOnNavigationItemSelectedListener.onNavigationItemSelected(navigationBar.getMenu().findItem(R.id.navigation_home));
+        if (!isAuthenticated()){
+            navigationCaregiverBar = (BottomNavigationView) findViewById(R.id.navigation_caregiver);
+            navigationCaregiverBar.setOnNavigationItemSelectedListener(mOnNavigationCaregiverItemSelectedListener);
+
+            mOnNavigationItemSelectedListener.onNavigationItemSelected(navigationCaregiverBar.getMenu().findItem(R.id.navigation_active_contract));
+            navigationCaregiverBar.setVisibility(View.VISIBLE);
+
+        } else {
+            navigationCaregiverBar.setVisibility(View.GONE);
+            navigationBar.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+            mOnNavigationItemSelectedListener.onNavigationItemSelected(navigationBar.getMenu().findItem(R.id.navigation_home));
+
+            navigationBar = (BottomNavigationView) findViewById(R.id.navigation);
+            navigationBar.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+            navigationBar.setVisibility(View.VISIBLE);
+        }
+
         gradientView = findViewById(R.id.gradient_view);
 
         Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.foto_caregiver);
@@ -92,20 +137,12 @@ public class MainActivity extends AppCompatActivity {
 
         AppService.setImage(image);
 
-        if (!isAuthenticated()){
-            navigationBar.setVisibility(View.GONE);
-            gradientView.setVisibility(View.GONE);
 
-            android.support.v4.app.FragmentTransaction fragmentTransaction =
-                    getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.content, new LoginFragment());
-            fragmentTransaction.commit();
-        }
 
     }
 
     private boolean isAuthenticated(){
-        return true;
+        return false;
     }
 
 }

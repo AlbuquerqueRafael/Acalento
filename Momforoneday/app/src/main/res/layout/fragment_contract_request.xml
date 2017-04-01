@@ -7,7 +7,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:weightSum="1">
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
@@ -15,13 +16,13 @@
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
             <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar_solicitacoes"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                android:id="@+id/toolbar_solicitacoes"
-                app:layout_scrollFlags="scroll|enterAlways"
-                android:background="@color/colorPrimary"
                 android:layout_marginLeft="-50px"
+                android:background="@color/colorPrimary"
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                 app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
                 <RelativeLayout
@@ -32,23 +33,23 @@
                         android:id="@+id/back_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:alpha="0.8"
+                        android:src="@drawable/ic_keyboard_arrow_left_black_24dp"
+                        android:tint="@android:color/white"
+                        android:visibility="gone"
                         app:backgroundTint="@color/colorPrimary"
                         app:borderWidth="0dp"
                         app:elevation="0dp"
                         app:fabSize="mini"
-                        app:rippleColor="@color/colorPrimary"
-                        android:alpha="0.8"
-                        android:src="@drawable/ic_keyboard_arrow_left_black_24dp"
-                        android:tint="@android:color/white"
-                        android:layout_centerVertical="true"
-                        android:visibility="gone"/>
+                        app:rippleColor="@color/colorPrimary" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="15dp"
-                        android:text="SOLICITAÇÕES"
                         android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"/>
+                        android:layout_centerVertical="true"
+                        android:text="SOLICITAÇÕES" />
 
                 </RelativeLayout>
             </android.support.v7.widget.Toolbar>
@@ -58,33 +59,32 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="3dp"
-            android:background="#9fc4c4c4">
-        </View>
+            android:background="#9fc4c4c4"></View>
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:orientation="vertical"
+        <LinearLayout
+            android:id="@+id/request_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="0.01"
             android:background="@android:color/white"
-            android:id="@+id/request_view"
+            android:orientation="vertical"
             android:visibility="gone"
             android:weightSum="1">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_weight="3.25">
+                android:layout_height="89dp"
+                android:layout_margin="10dp">
 
                 <ImageView
                     android:id="@+id/caregiver_img"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:padding="3dp"
-                    android:src="@drawable/ic_account_circle_black_24dp"
-                    android:layout_alignParentTop="true"
                     android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true" />
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:padding="3dp"
+                    android:src="@drawable/ic_account_circle_black_24dp" />
 
                 <TextView
                     android:id="@+id/caregiver_name"
@@ -102,37 +102,36 @@
                     android:id="@+id/accept_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/reject_btn"
-                    android:layout_alignBottom="@+id/reject_btn"
-                    android:layout_toLeftOf="@+id/reject_btn"
-                    android:layout_toStartOf="@+id/reject_btn"
                     android:background="@android:color/white"
                     android:padding="10dp"
                     android:stateListAnimator="@null"
                     android:text="Aceitar"
-                    android:textColor="#00b615" />
+                    android:textColor="#00b615"
+                    android:layout_alignBaseline="@+id/reject_btn"
+                    android:layout_alignBottom="@+id/reject_btn"
+                    android:layout_toLeftOf="@+id/reject_btn"
+                    android:layout_toStartOf="@+id/reject_btn" />
 
 
                 <android.support.v7.widget.AppCompatButton
                     android:id="@+id/reject_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@+id/caregiver_age"
                     android:background="@android:color/white"
                     android:padding="10dp"
                     android:stateListAnimator="@null"
                     android:text="Rejeitar"
-                    android:textColor="#b60000" />
+                    android:textColor="#b60000"
+                    android:layout_below="@+id/caregiver_img"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
             </RelativeLayout>
 
             <View
                 android:id="@+id/gradient_view"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:background="#32d9d9d9">
-            </View>
+                android:background="#fbe70606"></View>
 
         </LinearLayout>
     </LinearLayout>
