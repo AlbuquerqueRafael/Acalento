@@ -10,7 +10,7 @@
         android:textAlignment="center"
         android:gravity="center"
         android:background="@color/colorPrimary"
-        android:text="Avaliação"
+        android:text="Contratar"
         android:textColor="@android:color/white"
         android:textSize="20sp"/>
 
@@ -19,17 +19,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        
-        <RatingBar
+        <RadioGroup
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scaleY="0.7"
-            android:scaleX="0.7"
-            android:stepSize="1.0"
-            android:id="@+id/rating_bar"
+            android:id="@+id/radio_group"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="-10dp"/>
+            android:layout_margin="8dp"
+            android:padding="8dp">
+
+        </RadioGroup>
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -40,7 +38,7 @@
             <Button
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
-                android:text="Confirmar"
+                android:text="Contratar"
                 android:id="@+id/ok_button"
                 android:textColor="@color/colorPrimary"
                 android:backgroundTint="@android:color/white"

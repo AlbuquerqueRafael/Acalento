@@ -1,54 +1,80 @@
 package com.momforoneday.momforoneday.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by gabrielguimo on 22/03/17.
  */
 
 public class Contract {
 
-    private ContractStatus _status;
-    private Caregiver _caregiver;
-    private User _user;
+    private String status;
+    private String caregiver;
+    private User user;
+    private String schedule;
+    private List<Notification> notifications;
+    private String photoURL;
 
-    public Contract(Caregiver _caregiver, User _user) {
-        this._caregiver = _caregiver;
-        this._user = _user;
-        this._status = ContractStatus.CONTRACT_PENDING;
+    public Contract(){
+        this.notifications = new ArrayList<>();
     }
 
-    public Caregiver getCaregiver() {
-        return _caregiver;
+    public Contract(String caregiver, User user, String schedule) {
+        this.caregiver = caregiver;
+        this.user = user;
+        this.schedule = schedule;
+        this.status = "Pendente";
+        this.notifications = new ArrayList<>();
+        this.photoURL = "";
     }
 
-    public void setCaregiver(Caregiver _caregiver) {
-        this._caregiver = _caregiver;
+    public String getPhotoURL() {
+        return photoURL;
+    }
+
+    public void setPhotoURL(String photoURL) {
+        this.photoURL = photoURL;
+    }
+
+    public List<Notification> getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(List<Notification> notifications) {
+        this.notifications = notifications;
+    }
+
+    public String getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(String schedule) {
+        this.schedule = schedule;
+    }
+
+    public String getCaregiver() {
+        return caregiver;
+    }
+
+    public void setCaregiver(String caregiver) {
+        this.caregiver = caregiver;
     }
 
     public User getUser() {
-        return _user;
+        return user;
     }
 
-    public void setUser(User _user) {
-        this._user = _user;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getStatus(){
-
-        if (_status == ContractStatus.CONTRACT_PENDING){
-            return "Pendente";
-        } else if (_status == ContractStatus.CONTRACT_FINISHED) {
-            return "Finalizado";
-        } else if (_status == ContractStatus.CONTRACT_REJECTED) {
-            return "Rejeitado";
-        } else if (_status == ContractStatus.CONTRACT_RUNNING) {
-            return "Em andamento";
-        }
-
-        return "";
+        return status;
     }
 
-    public void setStatus(ContractStatus newStatus) {
-        this._status = newStatus;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
 

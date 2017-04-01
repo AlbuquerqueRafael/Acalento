@@ -32,17 +32,6 @@ public class CommentFragment extends Fragment {
 
         rootView = inflater.inflate(R.layout.fragment_comments, container, false);
 
-        FloatingActionButton backBtn = (FloatingActionButton) rootView.findViewById(R.id.back_btn);
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                android.support.v4.app.FragmentTransaction fragmentTransaction =
-                        getActivity().getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.content, new CaregiverDetailFragment());
-                fragmentTransaction.commit();
-            }
-        });
-
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler);
 
         comments = AppService.getSelectedCaregiver().getComments();

@@ -9,76 +9,101 @@ import java.util.List;
 
 public class Caregiver {
 
-    private String _name;
-    private String _email;
-    private String _telephone;
-    private int _age;
-    private List<Comment> _comments;
-    private int _rating;
-    private Contract _contract;
+    private String name;
+    private String email;
+    private String telephone;
+    private int age;
+    private List<Comment> comments;
+    private List<Integer> schedules;
+    private int rating;
+    private Contract contract;
+    private String course;
 
-    public Caregiver(String _name, String _email, String _telephone, int _age) {
-        this._name = _name;
-        this._email = _email;
-        this._telephone = _telephone;
-        this._age = _age;
-        this._comments = new ArrayList<>();
-        this._rating = 0;
+    public Caregiver(){
+        this.schedules = new ArrayList<>();
+        this.comments = new ArrayList<>();
+    }
+
+    public Caregiver(String _name, String _email, String _telephone, int _age, List<Integer> schedules, String course) {
+        this.name = _name;
+        this.email = _email;
+        this.telephone = _telephone;
+        this.age = _age;
+        this.schedules = schedules;
+        this.comments = new ArrayList<>();
+        this.rating = 0;
+        this.course = course;
+    }
+
+    public void setCourse(String course){
+        this.course = course;
+    }
+
+    public String getCourse(){
+        return this.course;
+    }
+
+    public void setSchedules(List<Integer> schedules) {
+        this.schedules = schedules;
+    }
+
+    public List<Integer> getSchedules() {
+        return this.schedules;
     }
 
     public Contract getContract() {
-        return this._contract;
+        return this.contract;
     }
 
     public void setContract(Contract contract){
-        this._contract = contract;
+        this.contract = contract;
     }
 
     public String getName() {
-        return _name;
+        return name;
     }
 
     public void setName(String _name) {
-        this._name = _name;
+        this.name = _name;
     }
 
     public String getEmail() {
-        return _email;
+        return email;
     }
 
     public void setEmail(String _email) {
-        this._email = _email;
+        this.email = _email;
     }
 
     public String getTelephone() {
-        return _telephone;
+        return telephone;
     }
 
     public void setTelephone(String _telephone) {
-        this._telephone = _telephone;
+        this.telephone = _telephone;
     }
 
     public int getAge() {
-        return _age;
+        return age;
     }
 
     public void setAge(int _age) {
-        this._age = _age;
+        this.age = _age;
     }
 
     public List<Comment> getComments() {
-        return _comments;
+        return comments;
     }
 
     public void setComments(List<Comment> _comments) {
-        this._comments = _comments;
+        this.comments = _comments;
     }
 
     public int getRating() {
-        return _rating;
+        return rating;
     }
 
     public void setRating(int _rating) {
-        this._rating = _rating;
+        this.rating = _rating;
     }
 }

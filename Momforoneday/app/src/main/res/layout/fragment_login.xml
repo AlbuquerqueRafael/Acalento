@@ -1,99 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#c17b71">
-
-    <ImageView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:id="@+id/logo_img" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/name_textview"
-        android:text="Acalento"
-        android:textSize="24sp"
-        android:layout_marginBottom="15dp"
-        android:layout_above="@id/logo_img"
-        android:textColor="@android:color/white"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/slogan_textview"
-        android:layout_centerHorizontal="true"
-        android:text="No busão tem a solução"
-        android:textSize="18sp"
-        android:layout_marginTop="15dp"
-        android:layout_below="@id/logo_img"
-        android:textColor="@android:color/white"/>
+    android:background="@color/colorPrimary">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:id="@+id/layout_login"
-        android:layout_marginTop="15dp"
-        android:layout_below="@id/logo_img"
-        android:visibility="gone"
-        android:scaleX="0"
-        android:scaleY="0">
+        android:layout_centerHorizontal="true">
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
+        <ImageView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp">
-            <EditText android:id="@+id/matricula_input"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:hint="Matrícula"
-                android:textColor="@android:color/white"
-                android:textSize="16sp"/>
-        </android.support.design.widget.TextInputLayout>
+            app:srcCompat="@drawable/acalento_logo"
+            android:layout_gravity="center"
+            android:layout_marginTop="80dp"/>
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
+        <ImageView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="5dp">
-            <EditText android:id="@+id/password_input"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:textColor="@android:color/white"
-                android:hint="Senha"
-                android:textSize="16sp"/>
-        </android.support.design.widget.TextInputLayout>
+            android:src="@drawable/acalento_name"
+            android:layout_gravity="center"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="-80dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/register_textview"
-            android:text="Ainda não possui conta? Registre-se!"
-            android:textSize="16sp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="15dp"
-            android:textColor="@android:color/white"/>
+            android:text="Estude com tranquilidade."
+            android:layout_marginTop="-50dp"
+            android:textColor="#f7ea5a"
+            android:layout_gravity="center"
+            android:textSize="18sp"/>
 
     </LinearLayout>
 
-    <android.support.v7.widget.AppCompatButton
-        android:id="@+id/login_btn"
-        android:background="@drawable/rounded_button"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:text="Entrar"
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginBottom="70dp"
         android:textColor="@android:color/white"
         android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:text="ENTRAR"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:background="@color/colorAccent"
         android:layout_centerHorizontal="true"/>
+
+
 
 </RelativeLayout>

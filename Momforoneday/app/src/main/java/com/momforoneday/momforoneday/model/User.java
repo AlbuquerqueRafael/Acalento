@@ -6,11 +6,21 @@ package com.momforoneday.momforoneday.model;
 
 public class User {
 
-    private String _name;
-    private String _email;
+    private String name;
+    private String email;
+
+    public User(){}
 
     public User(String _name, String _email) {
-        this._name = _name;
-        this._email = _email;
+        this.name = _name;
+        this.email = _email;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
     }
 }

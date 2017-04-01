@@ -30,9 +30,6 @@ public class HomeFragment extends Fragment {
 
         rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
-        toolbarTextView = (TextView) rootView.findViewById(R.id.toolbar_tv);
-        toolbarTextView.setText(AppService.getCurrentUser());
-
         scheduleButton = (AppCompatButton) rootView.findViewById(R.id.horarios_btn);
 
         scheduleButton.setOnClickListener(new View.OnClickListener() {

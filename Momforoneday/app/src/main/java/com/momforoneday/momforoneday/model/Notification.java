@@ -10,15 +10,17 @@ import java.util.Date;
 
 public class Notification {
 
-    private String _text;
-    private String _date;
-    private Caregiver _sender;
-    private User _receiver;
+    private String text;
+    private String date;
+    private String sender;
+    private User receiver;
 
-    public Notification(String _text, Caregiver _sender, User _receiver) {
-        this._text = _text;
-        this._sender = _sender;
-        this._receiver = _receiver;
+    public Notification(){}
+
+    public Notification(String text, String sender, User receiver) {
+        this.text = text;
+        this.sender = sender;
+        this.receiver = receiver;
 
         Date date = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
@@ -27,44 +29,38 @@ public class Notification {
         formatter = new SimpleDateFormat("HH:mm");
         String hourString = formatter.format(date);
 
-        this._date = dateString + " às " + hourString;
+        this.date = dateString + " às " + hourString;
     }
 
     public String getText() {
-        return _text;
+        return text;
     }
 
-    public void setText(String _text) {
-        this._text = _text;
+    public void setText(String text) {
+        this.text = text;
     }
 
     public String getDate() {
-        return _date;
+        return date;
     }
 
-    public void setDate(Date date) {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        String dateString = formatter.format(date);
-
-        formatter = new SimpleDateFormat("HH:mm");
-        String hourString = formatter.format(date);
-
-        this._date = dateString + " às " + hourString;
+    public void setDate(String date) {
+        this.date = date;
     }
 
-    public Caregiver getSender() {
-        return _sender;
+    public String getSender() {
+        return sender;
     }
 
-    public void setSender(Caregiver _sender) {
-        this._sender = _sender;
+    public void setSender(String sender) {
+        this.sender = sender;
     }
 
     public User getReceiver() {
-        return _receiver;
+        return receiver;
     }
 
-    public void setReceiver(User _receiver) {
-        this._receiver = _receiver;
+    public void setReceiver(User receiver) {
+        this.receiver = receiver;
     }
 }
