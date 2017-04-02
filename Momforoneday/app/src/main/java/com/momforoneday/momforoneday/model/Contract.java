@@ -1,7 +1,9 @@
 package com.momforoneday.momforoneday.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by gabrielguimo on 22/03/17.
@@ -13,11 +15,11 @@ public class Contract {
     private String caregiver;
     private User user;
     private String schedule;
-    private List<Notification> notifications;
+    private Map<String, Notification> notifications;
     private String photoURL;
 
     public Contract(){
-        this.notifications = new ArrayList<>();
+        this.notifications = new HashMap<>();
     }
 
     public Contract(String caregiver, User user, String schedule) {
@@ -25,7 +27,7 @@ public class Contract {
         this.user = user;
         this.schedule = schedule;
         this.status = "Pendente";
-        this.notifications = new ArrayList<>();
+        this.notifications = new HashMap<>();
         this.photoURL = "";
     }
 
@@ -37,11 +39,11 @@ public class Contract {
         this.photoURL = photoURL;
     }
 
-    public List<Notification> getNotifications() {
-        return notifications;
+    public Map<String, Notification> getNotifications(){
+        return this.notifications;
     }
 
-    public void setNotifications(List<Notification> notifications) {
+    public void  setNotifications(Map<String, Notification> notifications){
         this.notifications = notifications;
     }
 

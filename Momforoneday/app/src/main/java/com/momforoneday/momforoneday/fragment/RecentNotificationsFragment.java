@@ -1,21 +1,31 @@
 package com.momforoneday.momforoneday.fragment;
 
+import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.momforoneday.momforoneday.R;
+import com.momforoneday.momforoneday.adapter.CaregiverNotificationAdapter;
 import com.momforoneday.momforoneday.adapter.NotificationAdapter;
 import com.momforoneday.momforoneday.controller.FirebaseController;
 import com.momforoneday.momforoneday.controller.OnNotificationGetDataListener;
 import com.momforoneday.momforoneday.model.Notification;
 import com.momforoneday.momforoneday.service.AppService;
+import com.momforoneday.momforoneday.service.ImageProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +57,7 @@ public class RecentNotificationsFragment extends Fragment {
             }
         });
 
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler);
+
 
         initNotificationsList();
 
@@ -56,7 +66,7 @@ public class RecentNotificationsFragment extends Fragment {
 
 
     private void initNotificationsList(){
-        FirebaseController.retrieveNotifications(AppService.getContractedCaregiver(), new OnNotificationGetDataListener() {
+        FirebaseController.retrieveUserNotifications(AppService.getCurrentUser().getName(), new OnNotificationGetDataListener() {
             @Override
             public void onStart() {}
 
@@ -68,7 +78,16 @@ public class RecentNotificationsFragment extends Fragment {
                     notificationList.add(n);
                 }
 
-                recyclerView.setAdapter(new NotificationAdapter(notificationList, getContext()));
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+                builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+
+                recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler);
+                recyclerView.setAdapter(new NotificationAdapter(notificationList, getContext(), (AppCompatActivity) getActivity()));
 
                 RecyclerView.LayoutManager layout = new LinearLayoutManager(getContext(),
                         LinearLayoutManager.VERTICAL, false);

@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean hasCameraPermission = false;
     private String text = "";
     private String image = "";
+    private boolean baba = false;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -62,68 +63,24 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_home:
                     fragmentTransaction =
                             getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.content, new NotificationFragment());
+                    if(baba){
+                        fragmentTransaction.replace(R.id.content, new NotificationFragment());
+                    }else{
+                        fragmentTransaction.replace(R.id.content, new ContractListFragment());
+                    }
                     fragmentTransaction.commit();
                     return true;
 
                 case R.id.navigation_contracts:
-
-                    if (AppService.getContractedCaregiver() != null) {
-                        fragmentTransaction =
-                                getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction =
+                            getSupportFragmentManager().beginTransaction();
+                    if(baba){
+                        fragmentTransaction.replace(R.id.content, new ContractRequestFragment());
+                    }else{
                         fragmentTransaction.replace(R.id.content, new ContractsFragment());
-                        fragmentTransaction.commit();
-                        return true;
-                    } else {
-                        Toast.makeText(MainActivity.this, "Você não possui nenhum contrato no momento", Toast.LENGTH_SHORT).show();
-                        mOnNavigationItemSelectedListener.onNavigationItemSelected(navigationBar.getMenu().findItem(R.id.navigation_home));
-                        return false;
                     }
-
-               /*case R.id.navigation_config:
-                    fragmentTransaction =
-                            getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.content, new ConfigFragment());
-                    fragmentTransaction.commit();
-                    return true;*/
-            }
-
-            return false;
-        }
-
-    };
-
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationCaregiverItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-            android.support.v4.app.FragmentTransaction fragmentTransaction;
-
-            switch (item.getItemId()) {
-
-                case R.id.navigation_active_contract:
-                    fragmentTransaction =
-                            getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.content, new ContractListFragment());
                     fragmentTransaction.commit();
                     return true;
-
-                case R.id.navigation_requests:
-
-                    fragmentTransaction =
-                            getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.content, new ContractRequestFragment());
-                    fragmentTransaction.commit();
-                    return true;
-
-               /*case R.id.navigation_config:
-                    fragmentTransaction =
-                            getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.content, new ConfigFragment());
-                    fragmentTransaction.commit();
-                    return true;*/
             }
 
             return false;
@@ -139,29 +96,10 @@ public class MainActivity extends AppCompatActivity {
 
         cameraPermission();
         galeryPermission();
-      //  AppService.sendNotification("gg", "Testando", "testando");
+
         navigationBar = (BottomNavigationView) findViewById(R.id.navigation);
         navigationBar.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         mOnNavigationItemSelectedListener.onNavigationItemSelected(navigationBar.getMenu().findItem(R.id.navigation_home));
-
-
-        if (!isAuthenticated()){
-            navigationCaregiverBar = (BottomNavigationView) findViewById(R.id.navigation_caregiver);
-            navigationCaregiverBar.setOnNavigationItemSelectedListener(mOnNavigationCaregiverItemSelectedListener);
-
-            mOnNavigationItemSelectedListener.onNavigationItemSelected(navigationCaregiverBar.getMenu().findItem(R.id.navigation_active_contract));
-            navigationCaregiverBar.setVisibility(View.VISIBLE);
-
-        } else {
-            navigationCaregiverBar.setVisibility(View.GONE);
-            navigationBar.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-            mOnNavigationItemSelectedListener.onNavigationItemSelected(navigationBar.getMenu().findItem(R.id.navigation_home));
-
-            navigationBar = (BottomNavigationView) findViewById(R.id.navigation);
-            navigationBar.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-            navigationBar.setVisibility(View.VISIBLE);
-        }
-
         gradientView = findViewById(R.id.gradient_view);
 
         Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.foto_caregiver);
@@ -170,12 +108,21 @@ public class MainActivity extends AppCompatActivity {
 
         AppService.setImage(image);
 
+        if (!isAuthenticated()){
+            navigationBar.setVisibility(View.GONE);
+            gradientView.setVisibility(View.GONE);
+
+            android.support.v4.app.FragmentTransaction fragmentTransaction =
+                    getSupportFragmentManager().beginTransaction();
+//            fragmentTransaction.replace(R.id.content, new LoginFragment());
+            fragmentTransaction.commit();
+        }
 
 
     }
 
     private boolean isAuthenticated(){
-        return false;
+        return true;
     }
 
     @Override
@@ -186,9 +133,12 @@ public class MainActivity extends AppCompatActivity {
                 Bitmap imageBitmap = null;
                 ContentResolver cr = this.getContentResolver();
                 try {
-                    String imagePath = NotificationFragment.path.getPath();            // photoFile is a File type.
-                    Bitmap myBitmap  = BitmapFactory.decodeFile(imagePath);
                     imageBitmap = android.provider.MediaStore.Images.Media.getBitmap(cr, NotificationFragment.path);
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    imageBitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream);
+                    byte[] byteFormat = stream.toByteArray();
+                    image= Base64.encodeToString(byteFormat, Base64.DEFAULT);
+
                     //imageView.setImageBitmap(bitmap);
                     //imageBitmap = ExifUtil.rotateBitmap(imagePath, myBitmap);
                     //  InputStream image_stream = this.getContentResolver().openInputStream(NotificationFragment.path);
@@ -197,12 +147,13 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                imageBitmap.compress(Bitmap.CompressFormat.JPEG, 70, byteArrayOutputStream);
 
 
-                byte[] byteArray = byteArrayOutputStream .toByteArray();
-                image = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                imageBitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream);
+                byte[] byteFormat = stream.toByteArray();
+                image= Base64.encodeToString(byteFormat, Base64.NO_WRAP);
+
                // image = ImageProvider.convert(imageBitmap);
                 initInputTextBox();
             }

@@ -76,6 +76,7 @@ public class ContractsFragment extends Fragment {
         recentNotifications.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 android.support.v4.app.FragmentTransaction fragmentTransaction =
                         getActivity().getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.content, new RecentNotificationsFragment());

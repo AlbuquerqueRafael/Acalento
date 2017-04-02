@@ -11,14 +11,12 @@ import java.io.ByteArrayOutputStream;
 
 public class ImageProvider
 {
-    public static Bitmap convert(String base64Str) throws IllegalArgumentException
+    public static Bitmap convertToBitmap(String base64Str) throws IllegalArgumentException
     {
-        byte[] decodedBytes = Base64.decode(
-                base64Str.substring(base64Str.indexOf(",")  + 1),
-                Base64.DEFAULT
-        );
+        byte[] decodedString = Base64.decode(base64Str, Base64.NO_WRAP);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
-        return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+        return  decodedByte;
     }
 
     public static String convert(Bitmap bitmap)

@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -15,11 +16,13 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.UploadTask;
 import com.momforoneday.momforoneday.model.Caregiver;
 import com.momforoneday.momforoneday.model.Contract;
 import com.momforoneday.momforoneday.model.Notification;
+import com.momforoneday.momforoneday.model.User;
 import com.momforoneday.momforoneday.service.AppService;
 
 import java.util.ArrayList;
@@ -82,10 +85,10 @@ public class FirebaseController {
         Firebase firebaseRef = getFirebase();
         Firebase notificationReff = firebaseRef.child(CAREGIVERS).child(notification.getSender()).child(CONTRACT).child(NOTIFICATIONS);
 
-        List<Notification> notifications = caregiver.getContract().getNotifications();
-        notifications.add(notification);
+       // List<Notification> notifications = caregiver.getContract().getNotifications();
+      //  notifications.add(notification);
 
-        notificationReff.setValue(notifications);
+      //  notificationReff.setValue(notifications);
     }
 
     public static Caregiver getCaregiverLogged(final OnGetCaregiverListener listener){
@@ -114,19 +117,29 @@ public class FirebaseController {
 
     public static void retrieveCaregivers(final OnCaregiverGetDataListener listener){
         Firebase firebaseRef = getFirebase();
+        final List<Caregiver> lista = new ArrayList<>();
         Firebase caregiverReff = firebaseRef.child(CAREGIVERS);
 
         caregiverReff.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                List<Caregiver> lista = new ArrayList<>();
+
 
                 for (DataSnapshot care : dataSnapshot.getChildren()){
-                    Caregiver caregiver = care.getValue(Caregiver.class);
-                    lista.add(caregiver);
+                    Iterable<DataSnapshot> orderChildren = dataSnapshot.getChildren();
+
+                    for (DataSnapshot ord : orderChildren){
+                        Caregiver order = ord.getValue(Caregiver.class);
+
+                        lista.add(order);
+
+
+                    }
+
+                    listener.onSuccess(lista);
                 }
 
-                listener.onSuccess(lista);
+
             }
 
             @Override
@@ -165,6 +178,17 @@ public class FirebaseController {
         });
     }
 
+    public static void requestPhoto(Contract contract,
+                                    final onGetPhotoListener listener) {
+        Firebase firebaseRef = getFirebase();
+        Firebase photoRef = firebaseRef.child(CAREGIVERS).child(contract.getCaregiver()).child(CONTRACT).child(NOTIFICATIONS);
+
+        Notification not = new Notification("Olá, você poderia enviar uma foto do Carlos",
+                                            AppService.getCurrentUser().getName(), FirebaseInstanceId.getInstance().getToken());
+
+        photoRef.push().setValue(not);
+    }
+
     public static void sendImage(Contract contract, String url) {
         Firebase firebaseRef = getFirebase();
         Firebase photoRef = firebaseRef.child(CAREGIVERS).child(contract.getCaregiver()).child(CONTRACT).child(PHOTO);
@@ -193,6 +217,33 @@ public class FirebaseController {
                 for (DataSnapshot noti : dataSnapshot.getChildren()){
                     Notification notification = noti.getValue(Notification.class);
                     lista.add(notification);
+                }
+
+                listener.onSuccess(lista);
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+    }
+
+    public static void retrieveUserNotifications(String user, final OnNotificationGetDataListener listener) {
+        final List<Notification> lista = new ArrayList<>();
+        Firebase firebaseRef = getFirebase();
+        Firebase caregiverReff = firebaseRef.child("users").child("Gabriel Guimaraes").child(NOTIFICATIONS);
+        Log.v("Erro", "cjhjedasda");
+        caregiverReff.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Iterable<DataSnapshot> orderChildren = dataSnapshot.getChildren();
+                for (DataSnapshot ord : orderChildren){
+                    Notification order = ord.getValue(Notification.class);
+
+                    lista.add(order);
+
+
                 }
 
                 listener.onSuccess(lista);

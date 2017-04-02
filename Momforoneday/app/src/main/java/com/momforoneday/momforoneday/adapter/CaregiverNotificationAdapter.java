@@ -32,7 +32,7 @@ public class CaregiverNotificationAdapter extends RecyclerView.Adapter {
 
         View view = LayoutInflater.from(context).inflate(R.layout.list_notification, parent, false);
 
-        NotificationHolder holder = new NotificationHolder(view);
+        Holder holder = new Holder(view);
 
         return holder;
     }
@@ -40,7 +40,7 @@ public class CaregiverNotificationAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
 
-        NotificationHolder holder = (NotificationHolder) viewHolder;
+        Holder holder = (Holder) viewHolder;
 
         final Notification currentNotification = notificationList.get(position);
 
@@ -77,12 +77,12 @@ public class CaregiverNotificationAdapter extends RecyclerView.Adapter {
 }
 
 
-class NotificationHolder extends RecyclerView.ViewHolder {
+class Holder extends RecyclerView.ViewHolder {
 
     final TextView notificationText;
     final TextView notificationDate;
 
-    public NotificationHolder(View view) {
+    public Holder(View view) {
         super(view);
 
         notificationText = (TextView) view.findViewById(R.id.user_notification);

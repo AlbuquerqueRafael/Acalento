@@ -2,6 +2,7 @@ package com.momforoneday.momforoneday.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by gabrielguimo on 22/03/17.
@@ -24,7 +25,8 @@ public class Caregiver {
         this.comments = new ArrayList<>();
     }
 
-    public Caregiver(String _name, String _email, String _telephone, int _age, List<Integer> schedules, String course) {
+    public Caregiver(String _name, String _email, String _telephone, int _age, List<Integer> schedules, String course,
+                Map<String, Notification> notifications) {
         this.name = _name;
         this.email = _email;
         this.telephone = _telephone;
@@ -38,6 +40,7 @@ public class Caregiver {
     public void setCourse(String course){
         this.course = course;
     }
+
 
     public String getCourse(){
         return this.course;
