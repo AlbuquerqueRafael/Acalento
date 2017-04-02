@@ -21,7 +21,7 @@ import com.momforoneday.momforoneday.R;
 import com.momforoneday.momforoneday.adapter.NotificationAdapter;
 import com.momforoneday.momforoneday.controller.FirebaseController;
 import com.momforoneday.momforoneday.controller.OnNotificationGetDataListener;
-import com.momforoneday.momforoneday.controller.OnGetPhotoListener;
+import com.momforoneday.momforoneday.controller.onGetPhotoListener;
 import com.momforoneday.momforoneday.model.Caregiver;
 import com.momforoneday.momforoneday.model.Notification;
 import com.momforoneday.momforoneday.service.AppService;
@@ -188,7 +188,7 @@ public class ContractsFragment extends Fragment {
 
 
     private void requestImage(){
-        FirebaseController.requestImage(AppService.getContractedCaregiver().getContract(), new OnGetPhotoListener() {
+        FirebaseController.requestImage(AppService.getContractedCaregiver().getContract(), new onGetPhotoListener() {
             @Override
             public void onStart() {
 

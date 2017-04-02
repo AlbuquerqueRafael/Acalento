@@ -71,6 +71,24 @@ public class AppService {
         return currentUser;
     }
 
+    public static List<Notification> getCregiverNotification(){
+        List<Notification> notifications = new ArrayList<>();
+
+        Notification notification = new Notification("Carla, manda uma foto para do joão para mim",
+                "Claudia Melina", new User("Carla Ferreira", "carlaferreira@gmail.com"));
+        Notification notification1 = new Notification("Carla, como está meu bebê?",
+                "Claudia Melina", new User("Carla Ferreira", "carlaferreira@gmail.com"));
+        Notification notification2 = new Notification("Carla, manda outra foto, por favor",
+                "Claudia Melina", new User("Carla Ferreira", "carlaferreira@gmail.com"));
+
+        notifications.add(notification);
+        notifications.add(notification1);
+        notifications.add(notification2);
+
+        return notifications;
+
+    }
+
     public static void setLastRequestedPhoto(String url) {
         lastRequestedPhoto = url;
     }

@@ -123,7 +123,7 @@ public class FirebaseController {
         caregiverReff.child(caregiver.getName()).setValue(caregiver);
     }
 
-    public static void requestImage(Contract contract, final OnGetPhotoListener listener) {
+    public static void requestImage(Contract contract, final onGetPhotoListener listener) {
         Firebase firebaseRef = getFirebase();
         Firebase photoRef = firebaseRef.child(CAREGIVERS).child(contract.getCaregiver()).child(CONTRACT).child(PHOTO);
 
