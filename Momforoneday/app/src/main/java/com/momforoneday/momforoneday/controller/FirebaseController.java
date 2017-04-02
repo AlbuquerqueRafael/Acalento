@@ -8,14 +8,11 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
-import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
-import com.firebase.client.core.Tag;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -23,14 +20,13 @@ import com.google.firebase.storage.UploadTask;
 import com.momforoneday.momforoneday.model.Caregiver;
 import com.momforoneday.momforoneday.model.Contract;
 import com.momforoneday.momforoneday.model.Notification;
-import com.momforoneday.momforoneday.service.AppService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class FirebaseController {
 
+    private final static String LOGGED_CAREGIVER = "Carla Ferreira";
     private final static String CAREGIVERS = "caregivers";
     private final static String CONTRACT = "contract";
     private final static String NOTIFICATIONS = "notifications";
@@ -90,6 +86,30 @@ public class FirebaseController {
 
         notificationReff.setValue(notifications);
     }
+
+    public static Caregiver getCaregiverLogged(final OnGetCaregiverListener listener){
+        Firebase firebaseRef = getFirebase();
+        Firebase caregiverRef = firebaseRef.child(CAREGIVERS).child(LOGGED_CAREGIVER);
+
+        Caregiver caregiver;
+
+        caregiverRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                listener.onSuccess(dataSnapshot.getValue(Caregiver.class));
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
+        return null;
+    }
+
+
+
 
     public static void retrieveCaregivers(final OnCaregiverGetDataListener listener){
         Firebase firebaseRef = getFirebase();
