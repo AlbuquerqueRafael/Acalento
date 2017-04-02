@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.Manifest;
@@ -15,14 +17,17 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.momforoneday.momforoneday.controller.FirebaseController;
 import com.momforoneday.momforoneday.fragment.ConfigFragment;
 import com.momforoneday.momforoneday.fragment.ContractListFragment;
@@ -34,10 +39,12 @@ import com.momforoneday.momforoneday.model.Caregiver;
 import com.momforoneday.momforoneday.model.Comment;
 import com.momforoneday.momforoneday.model.Notification;
 import com.momforoneday.momforoneday.service.AppService;
+import com.momforoneday.momforoneday.service.ExifUtil;
 import com.momforoneday.momforoneday.util.CircleTransform;
 import com.squareup.picasso.Picasso;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int MY_PERMISSIONS_REQUEST_GALERY = 1;
     private boolean hasGalleryPermission = false;
     private boolean hasCameraPermission = false;
+    private String text = "";
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -104,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
         Firebase.setAndroidContext(this);
         cameraPermission();
         galeryPermission();
+      //  AppService.sendNotification("gg", "Testando", "testando");
         navigationBar = (BottomNavigationView) findViewById(R.id.navigation);
         navigationBar.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         mOnNavigationItemSelectedListener.onNavigationItemSelected(navigationBar.getMenu().findItem(R.id.navigation_home));
@@ -136,10 +145,50 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == NotificationFragment.CAPTURE_IMAGE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
+                Bitmap imageBitmap = null;
+                try {
+                    String imagePath = NotificationFragment.path.getPath();            // photoFile is a File type.
+                    Bitmap myBitmap  = BitmapFactory.decodeFile(imagePath);
 
+                    imageBitmap = ExifUtil.rotateBitmap(imagePath, myBitmap);
+                  //  InputStream image_stream = this.getContentResolver().openInputStream(NotificationFragment.path);
+                   // imageBitmap = BitmapFactory.decodeStream(this.getContentResolver().openInputStream(NotificationFragment.path));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                //  Bitmap imageBitmap = decodeFile(NotificationFragment.path);
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+                builder.setPositiveButton("Enviar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //image.delete();
+                        dialog.dismiss();
+
+                    }
+                });
+
+                builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // image.delete();
+                        dialog.cancel();
+                    }
+                });
+
+                LayoutInflater inflater = this.getLayoutInflater();
+                final View view = inflater.inflate(R.layout.image_dialog, null);
+                final ImageView photoImage = (ImageView) view.findViewById(R.id.photo_baby);
+                photoImage.setImageBitmap(imageBitmap);
+
+                builder.setView(view);
+                builder.show();
             }
         }
     }
+
+
 
     private void cameraPermission() {
         // Here, thisActivity is the current activity
@@ -171,13 +220,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public boolean checkCameraPermission(){
-        return hasCameraPermission && hasGalleryPermission;
-    }
+        public boolean checkCameraPermission(){
+            return hasCameraPermission && hasGalleryPermission;
+        }
 
-    private void galeryPermission() {
+        private void galeryPermission() {
         // Here, thisActivity is the current activity
-        if (ContextCompat.checkSelfPermission(this
+            if (ContextCompat.checkSelfPermission(this
                 ,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -196,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
 
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                        MY_PERMISSIONS_REQUEST_CAMERA);
+                        MY_PERMISSIONS_REQUEST_GALERY);
 
                 // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
                 // app-defined int constant. The callback method gets the
@@ -207,7 +256,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults)     {
+                                       String permissions[], int[] grantResults) {
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_CAMERA: {
                 // If request is cancelled, the result arrays are empty.
@@ -225,12 +274,58 @@ public class MainActivity extends AppCompatActivity {
                 }
                 return;
             }
+            case MY_PERMISSIONS_REQUEST_GALERY: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
 
-            // other 'case' lines to check for other
-            // permissions this app might request
+                    hasCameraPermission = true;
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
         }
     }
 
 
-}
+    // other 'case' lines to check for other
+    // permissions this app might request
+    private void initInputTextBox(){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Comentário: ");
+
+        // Set up the input
+        final EditText input = new EditText(this);
+        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        builder.setView(input);
+
+        // Set up the buttons
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                text = input.getText().toString();
+
+
+                }
+            });
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+            });
+
+            builder.show();
+        }
+    }
+
+
+

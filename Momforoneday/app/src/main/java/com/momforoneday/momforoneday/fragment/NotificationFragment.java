@@ -52,7 +52,7 @@ public class NotificationFragment extends Fragment {
     private TextView toolbarTextView;
     private RecyclerView recyclerView;
     private AppCompatButton scheduleButton;
-    private Uri path;
+    public static Uri path;
     public static final Integer CAPTURE_IMAGE_REQUEST_CODE = 100;
     private boolean checkPermission = false;
     private String text = "";
@@ -77,51 +77,6 @@ public class NotificationFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 startIntentImageCapture();
-
-
-                Bitmap imageBitmap = null;
-                try {
-                    InputStream image_stream = getActivity().getContentResolver().openInputStream(path);
-                    imageBitmap = BitmapFactory.decodeStream(getActivity().getContentResolver().openInputStream(path));
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-
-                System.out.println(imageBitmap);
-                System.out.println(imageBitmap);
-                System.out.println(imageBitmap);
-                System.out.println(imageBitmap);
-                System.out.println(imageBitmap);
-                System.out.println(imageBitmap);
-                //  Bitmap imageBitmap = decodeFile(NotificationFragment.path);
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-
-                builder.setPositiveButton("Enviar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //image.delete();
-                        dialog.dismiss();
-
-                    }
-                });
-
-                builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                       // image.delete();
-                        dialog.cancel();
-                    }
-                });
-
-                LayoutInflater inflater = getActivity().getLayoutInflater();
-                final View view = inflater.inflate(R.layout.image_dialog, null);
-                final ImageView photoImage = (ImageView) view.findViewById(R.id.photo_baby);
-                photoImage.setImageBitmap(imageBitmap);
-
-                builder.setView(view);
-                builder.show();
-
-
             }
         });
 
@@ -145,41 +100,6 @@ public class NotificationFragment extends Fragment {
         }
     }
 
-    private void initInputTextBox(){
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Comentário: ");
-
-        // Set up the input
-        final EditText input = new EditText(getContext());
-        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        builder.setView(input);
-
-        // Set up the buttons
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                text = input.getText().toString();
-                System.out.println(text);
-                System.out.println(text);
-
-                System.out.println(text);
-                System.out.println(text);
-
-                System.out.println(text);
-
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-
-        builder.show();
-    }
 
 
 }
