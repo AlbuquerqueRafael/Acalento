@@ -14,6 +14,7 @@ public class Notification {
     private String date;
     private String sender;
     private User receiver;
+    private String image;
 
     public Notification(){}
 
@@ -21,6 +22,22 @@ public class Notification {
         this.text = text;
         this.sender = sender;
         this.receiver = receiver;
+
+        Date date = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        String dateString = formatter.format(date);
+
+        formatter = new SimpleDateFormat("HH:mm");
+        String hourString = formatter.format(date);
+
+        this.date = dateString + " às " + hourString;
+    }
+
+    public Notification(String text, String sender, User receiver, String image) {
+        this.text = text;
+        this.sender = sender;
+        this.receiver = receiver;
+        this.image = image;
 
         Date date = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");

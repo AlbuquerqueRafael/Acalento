@@ -38,6 +38,7 @@ import com.momforoneday.momforoneday.fragment.NotificationFragment;
 import com.momforoneday.momforoneday.model.Caregiver;
 import com.momforoneday.momforoneday.model.Comment;
 import com.momforoneday.momforoneday.model.Notification;
+import com.momforoneday.momforoneday.model.User;
 import com.momforoneday.momforoneday.service.AppService;
 import com.momforoneday.momforoneday.service.ExifUtil;
 import com.momforoneday.momforoneday.util.CircleTransform;
@@ -60,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean hasGalleryPermission = false;
     private boolean hasCameraPermission = false;
     private String text = "";
-
+    private String image = "";
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -145,45 +146,8 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == NotificationFragment.CAPTURE_IMAGE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                Bitmap imageBitmap = null;
-                try {
-                    String imagePath = NotificationFragment.path.getPath();            // photoFile is a File type.
-                    Bitmap myBitmap  = BitmapFactory.decodeFile(imagePath);
-
-                    imageBitmap = ExifUtil.rotateBitmap(imagePath, myBitmap);
-                  //  InputStream image_stream = this.getContentResolver().openInputStream(NotificationFragment.path);
-                   // imageBitmap = BitmapFactory.decodeStream(this.getContentResolver().openInputStream(NotificationFragment.path));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                //  Bitmap imageBitmap = decodeFile(NotificationFragment.path);
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-                builder.setPositiveButton("Enviar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //image.delete();
-                        dialog.dismiss();
-
-                    }
-                });
-
-                builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // image.delete();
-                        dialog.cancel();
-                    }
-                });
-
-                LayoutInflater inflater = this.getLayoutInflater();
-                final View view = inflater.inflate(R.layout.image_dialog, null);
-                final ImageView photoImage = (ImageView) view.findViewById(R.id.photo_baby);
-                photoImage.setImageBitmap(imageBitmap);
-
-                builder.setView(view);
-                builder.show();
+                B
+                initInputTextBox();
             }
         }
     }
@@ -308,15 +272,17 @@ public class MainActivity extends AppCompatActivity {
         builder.setView(input);
 
         // Set up the buttons
-            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            builder.setPositiveButton("Enviar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 text = input.getText().toString();
-
-
-                }
+                Notification notification = new Notification("Gabriel, olha a foto do seu filhao",
+                        "Claudia Melina", new User("Carla Ferreira", "carlaferreira@gmail.com"), );
+                FirebaseController.updateUserNotification();
+                AppService.sendNotification("gg", "testando", "testando");
+            }
             });
-            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();

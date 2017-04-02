@@ -5,6 +5,7 @@ package com.momforoneday.momforoneday.controller;
  */
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -148,6 +149,14 @@ public class FirebaseController {
         Firebase photoRef = firebaseRef.child(CAREGIVERS).child(contract.getCaregiver()).child(CONTRACT).child(PHOTO);
 
         photoRef.setValue(url);
+    }
+
+    public static void updateUserNotification(Notification notification, Bitmap imageBitmap){
+        Firebase firebaseRef = getFirebase();
+        Firebase photoRef = firebaseRef.child("users").child(AppService.getCurrentUser().getName()).child(NOTIFICATIONS);
+
+
+        photoRef.push().setValue(notification);
     }
 
     public static void retrieveNotifications(Caregiver contractedCaregiver, final OnNotificationGetDataListener listener) {
