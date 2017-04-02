@@ -90,10 +90,13 @@ public class NotificationFragment extends Fragment {
             SecureRandom random = new SecureRandom();
             File pathe = Environment.getExternalStoragePublicDirectory(
                     Environment.DIRECTORY_PICTURES);
+
             image = new File(pathe, new BigInteger(130, random).toString(32) + ".jpeg");
             path = Uri.fromFile(image);
             cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, path);
             getActivity().startActivityForResult(cameraIntent, CAPTURE_IMAGE_REQUEST_CODE);
+            pathe.delete();
+            image.delete();
 
         } catch (Exception e) {
             e.printStackTrace();

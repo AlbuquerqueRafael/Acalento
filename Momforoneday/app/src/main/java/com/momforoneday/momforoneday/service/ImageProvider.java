@@ -23,6 +23,7 @@ public class ImageProvider
 
     public static String convert(Bitmap bitmap)
     {
+
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
 

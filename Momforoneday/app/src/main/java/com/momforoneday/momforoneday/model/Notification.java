@@ -33,10 +33,9 @@ public class Notification {
         this.date = dateString + " às " + hourString;
     }
 
-    public Notification(String text, String sender, User receiver, String image) {
+    public Notification(String text, String sender, String image) {
         this.text = text;
         this.sender = sender;
-        this.receiver = receiver;
         this.image = image;
 
         Date date = new Date();
@@ -69,6 +68,10 @@ public class Notification {
         return sender;
     }
 
+    public String getImage() {
+        return image;
+    }
+
     public void setSender(String sender) {
         this.sender = sender;
     }
@@ -80,4 +83,9 @@ public class Notification {
     public void setReceiver(User receiver) {
         this.receiver = receiver;
     }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
 }

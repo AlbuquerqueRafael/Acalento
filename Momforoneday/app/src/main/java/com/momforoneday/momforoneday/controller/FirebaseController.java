@@ -20,6 +20,7 @@ import com.google.firebase.storage.UploadTask;
 import com.momforoneday.momforoneday.model.Caregiver;
 import com.momforoneday.momforoneday.model.Contract;
 import com.momforoneday.momforoneday.model.Notification;
+import com.momforoneday.momforoneday.service.AppService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -171,9 +172,9 @@ public class FirebaseController {
         photoRef.setValue(url);
     }
 
-    public static void updateUserNotification(Notification notification, Bitmap imageBitmap){
+    public static void updateUserNotification(Notification notification){
         Firebase firebaseRef = getFirebase();
-        Firebase photoRef = firebaseRef.child("users").child(AppService.getCurrentUser().getName()).child(NOTIFICATIONS);
+        Firebase photoRef = firebaseRef.child("users").child("Gabriel Guimaraes").child(NOTIFICATIONS);
 
 
         photoRef.push().setValue(notification);

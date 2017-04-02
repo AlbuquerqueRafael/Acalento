@@ -1,66 +1,43 @@
 package com.momforoneday.momforoneday;
 
 import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.media.ExifInterface;
-import android.net.Uri;
 import android.os.Bundle;
 import android.Manifest;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
-import android.util.Log;
-import android.view.LayoutInflater;
+import android.util.Base64;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
-<<<<<<< HEAD
-import com.google.firebase.iid.FirebaseInstanceId;
+
+
 import com.momforoneday.momforoneday.controller.FirebaseController;
-import com.momforoneday.momforoneday.fragment.ConfigFragment;
-=======
->>>>>>> c813ded1dc322252458a93aa4dd5c2e74567ecad
 import com.momforoneday.momforoneday.fragment.ContractListFragment;
 import com.momforoneday.momforoneday.fragment.ContractRequestFragment;
 import com.momforoneday.momforoneday.fragment.ContractsFragment;
-import com.momforoneday.momforoneday.fragment.LoginFragment;
-<<<<<<< HEAD
 import com.momforoneday.momforoneday.fragment.NotificationFragment;
-import com.momforoneday.momforoneday.model.Caregiver;
-import com.momforoneday.momforoneday.model.Comment;
 import com.momforoneday.momforoneday.model.Notification;
-import com.momforoneday.momforoneday.model.User;
-=======
->>>>>>> c813ded1dc322252458a93aa4dd5c2e74567ecad
 import com.momforoneday.momforoneday.service.AppService;
 import com.momforoneday.momforoneday.service.ExifUtil;
+import com.momforoneday.momforoneday.service.ImageProvider;
 import com.momforoneday.momforoneday.util.CircleTransform;
-import com.squareup.picasso.Picasso;
 
-<<<<<<< HEAD
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.ByteArrayOutputStream;
 
-import static com.momforoneday.momforoneday.R.id.view;
 
-=======
->>>>>>> c813ded1dc322252458a93aa4dd5c2e74567ecad
 public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView navigationBar;
@@ -206,7 +183,27 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == NotificationFragment.CAPTURE_IMAGE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                
+                Bitmap imageBitmap = null;
+                ContentResolver cr = this.getContentResolver();
+                try {
+                    String imagePath = NotificationFragment.path.getPath();            // photoFile is a File type.
+                    Bitmap myBitmap  = BitmapFactory.decodeFile(imagePath);
+                    imageBitmap = android.provider.MediaStore.Images.Media.getBitmap(cr, NotificationFragment.path);
+                    //imageView.setImageBitmap(bitmap);
+                    //imageBitmap = ExifUtil.rotateBitmap(imagePath, myBitmap);
+                    //  InputStream image_stream = this.getContentResolver().openInputStream(NotificationFragment.path);
+                    // imageBitmap = BitmapFactory.decodeStream(this.getContentResolver().openInputStream(NotificationFragment.path));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                imageBitmap.compress(Bitmap.CompressFormat.JPEG, 70, byteArrayOutputStream);
+
+
+                byte[] byteArray = byteArrayOutputStream .toByteArray();
+                image = Base64.encodeToString(byteArray, Base64.DEFAULT);
+               // image = ImageProvider.convert(imageBitmap);
                 initInputTextBox();
             }
         }
@@ -328,7 +325,7 @@ public class MainActivity extends AppCompatActivity {
         // Set up the input
         final EditText input = new EditText(this);
         // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
         builder.setView(input);
 
         // Set up the buttons
@@ -336,9 +333,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 text = input.getText().toString();
+
+
                 Notification notification = new Notification("Gabriel, olha a foto do seu filhao",
-                        "Claudia Melina", new User("Carla Ferreira", "carlaferreira@gmail.com"), );
-                FirebaseController.updateUserNotification();
+                        "Carla Ferreira", image);
+                FirebaseController.updateUserNotification(notification);
                 AppService.sendNotification("gg", "testando", "testando");
             }
             });
