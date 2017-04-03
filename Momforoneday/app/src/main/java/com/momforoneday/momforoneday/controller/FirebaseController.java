@@ -182,27 +182,20 @@ public class FirebaseController {
 
     public static void retrieveCaregivers(final OnCaregiverGetDataListener listener){
         Firebase firebaseRef = getFirebase();
-        final List<Caregiver> lista = new ArrayList<>();
         Firebase caregiverReff = firebaseRef.child(CAREGIVERS);
 
         caregiverReff.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                List<Caregiver> lista = new ArrayList<>();
 
-
-                for (DataSnapshot care : dataSnapshot.getChildren()){
-                    Iterable<DataSnapshot> orderChildren = dataSnapshot.getChildren();
-
-                    for (DataSnapshot ord : orderChildren){
-                        Caregiver order = ord.getValue(Caregiver.class);
-
-                        lista.add(order);
-
-
-                    }
-
-                    listener.onSuccess(lista);
+                for (DataSnapshot noti : dataSnapshot.getChildren()){
+                    Caregiver order = noti.getValue(Caregiver.class);
+                    lista.add(order);
                 }
+
+                listener.onSuccess(lista);
+
 
 
             }
