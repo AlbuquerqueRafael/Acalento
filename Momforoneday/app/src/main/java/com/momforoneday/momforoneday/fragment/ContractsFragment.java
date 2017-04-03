@@ -151,7 +151,7 @@ public class ContractsFragment extends Fragment {
                                 //                                .centerCrop().into(requestedImage);
                             }
                         }catch (Exception e){
-                            
+
                         }
 
 
