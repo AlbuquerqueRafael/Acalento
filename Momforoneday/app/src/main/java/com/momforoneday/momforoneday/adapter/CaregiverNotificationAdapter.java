@@ -69,7 +69,7 @@ public class CaregiverNotificationAdapter extends RecyclerView.Adapter<Carregive
 
 
 
-        viewHolder.notificationText.setText(currentNotification.getSender());
+        viewHolder.notificationText.setText(currentNotification.getReceiver().getName());
         viewHolder.notificationDate.setText(currentNotification.getDate());
 
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {

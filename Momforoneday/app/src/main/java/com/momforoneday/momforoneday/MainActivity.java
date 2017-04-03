@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private String image = "";
     private boolean baba = true;
     private Bitmap bpm;
+    private int opcao;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -256,32 +257,38 @@ public class MainActivity extends AppCompatActivity {
     private void initInputTextBox(final Intent data){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Comentário: ");
+        final CharSequence items[] = new CharSequence[] {"comendo", "chorando", "brincando", "remedio", "dormindo"};
+        builder.setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
 
-        // Set up the input
-        final EditText input = new EditText(this);
-        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-        input.setInputType(InputType.TYPE_CLASS_TEXT);
-        builder.setView(input);
+            @Override
+            public void onClick(DialogInterface d, int n) {
+                opcao = n;
+            }
+
+        });
+
+        builder.setTitle("Escolha uma opçcao");
+
+
 
         // Set up the buttons
-            builder.setPositiveButton("Enviar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                text = input.getText().toString();
-                FirebaseController.storageBabyImage(data, MainActivity.this, text);
+        builder.setPositiveButton("Enviar", new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            text = items[opcao].toString();
+            FirebaseController.storageBabyImage(data, MainActivity.this, text);
 
 
-            }
-            });
-            builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-            });
+        }
+        });
+        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            dialog.cancel();
+        }
+        });
 
-            builder.show();
+        builder.show();
         }
     }
 

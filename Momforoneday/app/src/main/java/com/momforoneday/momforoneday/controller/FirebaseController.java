@@ -97,7 +97,7 @@ public class FirebaseController {
                         //if the upload is successfull
                         //hiding the progress dialog
                         Notification notification = new Notification(text,
-                                "Carla Ferreira", taskSnapshot.getDownloadUrl().toString());
+                                "Carla Ferreira", AppService.getCurrentUser(),taskSnapshot.getDownloadUrl().toString());
                         FirebaseController.updateUserNotification(notification);
                         AppService.sendNotification(FirebaseInstanceId.getInstance().getToken(), "Você Recebeu uma nova notificação", "Nova foto");
                         progressDialog.dismiss();
@@ -145,15 +145,28 @@ public class FirebaseController {
         caregiverReff.setValue(contract);
     }
 
-    public static void sendNotification(Caregiver caregiver, Notification notification){
+    public static void sendNotification(Caregiver caregiver){
 
         Firebase firebaseRef = getFirebase();
-        Firebase notificationReff = firebaseRef.child(CAREGIVERS).child(notification.getSender()).child(CONTRACT).child(NOTIFICATIONS);
+        Firebase notificationReff = firebaseRef.child(CAREGIVERS).child(caregiver.getName()).child(CONTRACT).child(NOTIFICATIONS);
 
-       // List<Notification> notifications = caregiver.getContract().getNotifications();
-      //  notifications.add(notification);
+        Notification not = new Notification("Olá, você poderia enviar uma foto do meu bebe",
+                AppService.getContractedCaregiver().getName(), AppService.getCurrentUser(), FirebaseInstanceId.getInstance().getToken());
 
-      //  notificationReff.setValue(notifications);
+        List<Notification> notifications = caregiver.getContract().getNotifications();
+        notifications.add(not);
+
+        notificationReff.setValue(notifications);
+    }
+
+    public static void requestPhoto(Contract contract) {
+        Firebase firebaseRef = getFirebase();
+        Firebase photoRef = firebaseRef.child(CAREGIVERS).child(contract.getCaregiver()).child(CONTRACT).child(NOTIFICATIONS);
+
+//        Notification not = new Notification("Olá, você poderia enviar uma foto do meu bebe",
+//                AppService.getCurrentUser().getName(), FirebaseInstanceId.getInstance().getToken());
+//
+//        photoRef.push().setValue(not);
     }
 
     public static Caregiver getCaregiverLogged(final OnGetCaregiverListener listener){
@@ -165,7 +178,11 @@ public class FirebaseController {
         caregiverRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                listener.onSuccess(dataSnapshot.getValue(Caregiver.class));
+                try {
+                    listener.onSuccess(dataSnapshot.getValue(Caregiver.class));
+                }catch (Exception e){
+                    listener.onSuccess(null);
+                }
             }
 
             @Override
@@ -190,8 +207,12 @@ public class FirebaseController {
                 List<Caregiver> lista = new ArrayList<>();
 
                 for (DataSnapshot noti : dataSnapshot.getChildren()){
-                    Caregiver order = noti.getValue(Caregiver.class);
-                    lista.add(order);
+                    try {
+                        Caregiver order = noti.getValue(Caregiver.class);
+                        lista.add(order);
+                    }catch (Exception e){
+
+                    }
                 }
 
                 listener.onSuccess(lista);
@@ -236,15 +257,6 @@ public class FirebaseController {
         });
     }
 
-    public static void requestPhoto(Contract contract) {
-        Firebase firebaseRef = getFirebase();
-        Firebase photoRef = firebaseRef.child(CAREGIVERS).child(contract.getCaregiver()).child(CONTRACT).child(NOTIFICATIONS);
-
-        Notification not = new Notification("Olá, você poderia enviar uma foto do meu bebe",
-                                            AppService.getCurrentUser().getName(), FirebaseInstanceId.getInstance().getToken());
-
-        photoRef.push().setValue(not);
-    }
 
     public static void sendImage(Contract contract, String url) {
         Firebase firebaseRef = getFirebase();

@@ -15,11 +15,11 @@ public class Contract {
     private String caregiver;
     private User user;
     private String schedule;
-    private Map<String, Notification> notifications;
+    private List<Notification> notifications;
     private String photoURL;
 
     public Contract(){
-        this.notifications = new HashMap<>();
+        this.notifications = new ArrayList<>();
     }
 
     public Contract(String caregiver, User user, String schedule) {
@@ -27,7 +27,7 @@ public class Contract {
         this.user = user;
         this.schedule = schedule;
         this.status = "Pendente";
-        this.notifications = new HashMap<>();
+        this.notifications = new ArrayList<>();
         this.photoURL = "";
     }
 
@@ -39,11 +39,11 @@ public class Contract {
         this.photoURL = photoURL;
     }
 
-    public Map<String, Notification> getNotifications(){
+    public List<Notification> getNotifications(){
         return this.notifications;
     }
 
-    public void  setNotifications(Map<String, Notification> notifications){
+    public void  setNotifications(List<Notification> notifications){
         this.notifications = notifications;
     }
 

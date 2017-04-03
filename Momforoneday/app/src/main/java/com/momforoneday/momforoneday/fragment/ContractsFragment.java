@@ -128,27 +128,31 @@ public class ContractsFragment extends Fragment {
                     public void onSuccess(List<Notification> lista) {
                         try {
                             notificationList = new ArrayList<>();
-                            Log.v("Erro", "td");
-                            Log.v("Erro", "td");
-
-                            Log.v("Erro", "td");
-
-                            Log.v("Erro", "td");
 
                             if (lista.size() > 0) {
                                 requestedImage.setVisibility(View.VISIBLE);
                                 notificationLayout.setVisibility(View.VISIBLE);
 
-                                notificationText.setText(lista.get(lista.size() - 1).getSender());
+                                String status = lista.get(lista.size() - 1).getText();
+                                String text = "";
+                                if (status.equals("comendo")) {
+                                    text = getEmojiByUnicode(0x1F37C) + "  Mamãe, estou comendo! Nham nham";
+                                } else if (status.equals("chorando")) {
+                                    text = getEmojiByUnicode(0x1F62D) + "  Mamãeeee, estou chorando! Buáááá";
+                                } else if (status.equals("brincando")) {
+                                    text = getEmojiByUnicode(0x1F61D) + "  Olha mamãe, estou brincando! Hihi";
+                                } else if (status.equals("remedio")) {
+                                    text = getEmojiByUnicode(0x1F48A) + "  Mamãe, estou tomando o remédio! Argh";
+                                } else if (status.equals("dormindo")) {
+                                    text = getEmojiByUnicode(0x1F634) + "  Mamãe, estou indo dormir! Zzzzz";
+                                }
+
+                                notificationText.setText(text);
                                 notificationDate.setText(lista.get(lista.size() - 1).getDate());
                                 requestedImage.setVisibility(View.VISIBLE);
-                                Log.v("Erro", "https://firebasestorage.googleapis.com/v0/b/mom-for-one-day.appspot.com/o/images%2F+%2B+a4ct2t6lhj6ipksaot8ctq8u6s.jpg?alt=media&token=aecb50a2-3a45-4244-8e64-a85afdac1825");
-                                Log.v("Erro", lista.get(lista.size() - 1).getImage().toString());
+
                                 Glide.with(getContext()).load(lista.get(lista.size() - 1).getImage().toString()).into(requestedImage);
-                                //                             Picasso.with(getContext())
-                                //                                 .load(lista.get(lista.size() -1).getImage())
-                                //                            .resize(200,200)
-                                //                                .centerCrop().into(requestedImage);
+
                             }
                         }catch (Exception e){
 
@@ -204,7 +208,7 @@ public class ContractsFragment extends Fragment {
         builder.setMessage("Solicitação feito, logo mais você receberá uma notificação");
         builder.show();
 
-        FirebaseController.requestPhoto(AppService.getContractedCaregiver().getContract());
+        FirebaseController.sendNotification(AppService.getContractedCaregiver());
     }
 
     private void checkStatus(Caregiver caregiver) {

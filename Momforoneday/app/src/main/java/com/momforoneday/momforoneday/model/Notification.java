@@ -33,11 +33,11 @@ public class Notification {
         this.date = dateString + " às " + hourString;
     }
 
-    public Notification(String text, String sender, String image) {
+    public Notification(String text, String sender, User receiver, String image) {
         this.text = text;
         this.sender = sender;
         this.image = image;
-
+        this.receiver = receiver;
         Date date = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         String dateString = formatter.format(date);

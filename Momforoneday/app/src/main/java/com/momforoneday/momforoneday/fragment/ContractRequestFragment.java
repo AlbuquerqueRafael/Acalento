@@ -99,15 +99,19 @@ public class ContractRequestFragment extends Fragment {
             @Override
             public void onSuccess(Caregiver cg) {
                 caregiver = cg;
-                Contract contract = caregiver.getContract();
+                try {
+                    Contract contract = caregiver.getContract();
 
-                if(isPendente(caregiver)){
-                    contract_layout.setVisibility(View.VISIBLE);
+                    if (isPendente(caregiver)) {
+                        contract_layout.setVisibility(View.VISIBLE);
 
-                    parent_name.setText(contract.getUser().getName());
+                        parent_name.setText(contract.getUser().getName());
 
-                } else if (contract_layout.getVisibility() == View.VISIBLE){
-                    contract_layout.setVisibility(View.GONE);
+                    } else if (contract_layout.getVisibility() == View.VISIBLE) {
+                        contract_layout.setVisibility(View.GONE);
+                    }
+                }catch (Exception e){
+
                 }
             }
         });

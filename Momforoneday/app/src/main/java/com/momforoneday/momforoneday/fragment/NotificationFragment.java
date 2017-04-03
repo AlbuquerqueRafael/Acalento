@@ -151,7 +151,12 @@ public class NotificationFragment extends Fragment {
             @Override
             public void onSuccess(Caregiver cg) {
                 Caregiver caregiver = cg;
-                Contract contract = caregiver.getContract();
+                try{
+                    Contract contract = caregiver.getContract();
+                }catch(Exception e){
+
+                }
+
 
                 if(!isPendente(caregiver)){
                     textview.setText("Contrato ativo");
@@ -164,7 +169,11 @@ public class NotificationFragment extends Fragment {
     }
 
     private static boolean isPendente(Caregiver caregiver) {
-        return caregiver.getContract().getStatus().equals("Pendente");
+        try{
+            return caregiver.getContract().getStatus().equals("Pendente");
+        }catch(Exception e){
+            return true;
+        }
     }
 
 

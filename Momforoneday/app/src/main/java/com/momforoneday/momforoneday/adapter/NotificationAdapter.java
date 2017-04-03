@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.momforoneday.momforoneday.R;
 import com.momforoneday.momforoneday.holder.NotificationHolder;
 import com.momforoneday.momforoneday.model.Notification;
@@ -68,39 +69,53 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationHolder
 
         final Notification currentNotification = notificationList.get(position);
 
-//        String text = "";
-//        String status = currentNotification.getText();
-//
-//        if (status.equals("comendo")) {
-//            text = getEmojiByUnicode(0x1F37C) + "  Mamãe, estou comendo! Nham nham";
-//        } else if (status.equals("chorando")) {
-//            text = getEmojiByUnicode(0x1F62D) + "  Mamãeeee, estou chorando! Buáááá";
-//        } else if (status.equals("brincando")) {
-//            text = getEmojiByUnicode(0x1F61D) + "  Olha mamãe, estou brincando! Hihi";
-//        } else if (status.equals("remedio")) {
-//            text = getEmojiByUnicode(0x1F48A) + "  Mamãe, estou tomando o remédio! Argh";
-//        } else if (status.equals("dormindo")) {
-//            text = getEmojiByUnicode(0x1F634) + "  Mamãe, estou indo dormir! Zzzzz";
-//        }
+        String text = "";
+        String status = currentNotification.getText();
 
-        viewHolder.notificationText.setText(currentNotification.getSender());
+        if (status.equals("comendo")) {
+            text = getEmojiByUnicode(0x1F37C) + "  Mamãe, estou comendo! Nham nham";
+        } else if (status.equals("chorando")) {
+            text = getEmojiByUnicode(0x1F62D) + "  Mamãeeee, estou chorando! Buáááá";
+        } else if (status.equals("brincando")) {
+            text = getEmojiByUnicode(0x1F61D) + "  Olha mamãe, estou brincando! Hihi";
+        } else if (status.equals("remedio")) {
+            text = getEmojiByUnicode(0x1F48A) + "  Mamãe, estou tomando o remédio! Argh";
+        } else if (status.equals("dormindo")) {
+            text = getEmojiByUnicode(0x1F634) + "  Mamãe, estou indo dormir! Zzzzz";
+        }
+
+        viewHolder.notificationText.setText(text);
         viewHolder.notificationDate.setText(currentNotification.getDate());
 
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
                 builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
                     }
                 });
 
-                builder.setMessage(currentNotification.getText());
+                LayoutInflater inflater = activity.getLayoutInflater();
+                final View view = inflater.inflate(R.layout.image_dialog, null);
+                ImageView photoImage = (ImageView) view.findViewById(R.id.photo_baby);
+
+                Glide.with(context).load(currentNotification.getImage()).into(photoImage);
+                builder.setView(view);
                 builder.show();
+//                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//
+//                builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.dismiss();
+//                    }
+//                });
+//
+//                builder.setMessage(currentNotification.getText());
+//                builder.show();
             }
         });
 
