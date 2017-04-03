@@ -89,7 +89,7 @@ public class FirebaseController {
         StorageReference riversRef = FirebaseStorage.getInstance().getReference().child("images/ + " +
                 new BigInteger(130, random).toString(32) + ".jpg");
 
-        
+
         riversRef.putFile(data.getData())
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override

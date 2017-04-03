@@ -138,7 +138,6 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == NotificationFragment.CAPTURE_IMAGE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                bpm = ImagePicker.getImageFromResult(this, resultCode, data);
 
                // image = ImageProvider.convert(imageBitmap);
                 initInputTextBox(data);
@@ -270,7 +269,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 text = input.getText().toString();
-                FirebaseController.storageBabyImage(data, MainActivity.this, text, bpm);
+                FirebaseController.storageBabyImage(data, MainActivity.this, text);
 
 
             }

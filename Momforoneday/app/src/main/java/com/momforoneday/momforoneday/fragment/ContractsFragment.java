@@ -76,15 +76,15 @@ public class ContractsFragment extends Fragment {
         notificationDate = (TextView) rootView.findViewById(R.id.notification_date);
 
         notificationLayout = (RelativeLayout) rootView.findViewById(R.id.notification_layout);
-
+        requestedImage.setVisibility(View.GONE);
+        notificationLayout.setVisibility(View.GONE);
         navigationBar = (BottomNavigationView) getActivity().findViewById(R.id.navigation);
         gradientView = getActivity().findViewById(R.id.gradient_view);
 
         navigationBar.setVisibility(View.VISIBLE);
         gradientView.setVisibility(View.VISIBLE);
 
-        requestedImage.setVisibility(View.GONE);
-        notificationLayout.setVisibility(View.GONE);
+
         recentNotifications.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,32 +120,38 @@ public class ContractsFragment extends Fragment {
         requestLastPic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseController.retrieveNotifications(AppService.getContractedCaregiver(), new OnNotificationGetDataListener() {
+                FirebaseController.retrieveUserNotifications(AppService.getCurrentUser().getName(), new OnNotificationGetDataListener() {
                     @Override
                     public void onStart() {}
 
                     @Override
                     public void onSuccess(List<Notification> lista) {
-                        notificationList = new ArrayList<>();
-                        Log.v("Erro", "td");
-                        Log.v("Erro", "td");
+                        try {
+                            notificationList = new ArrayList<>();
+                            Log.v("Erro", "td");
+                            Log.v("Erro", "td");
 
-                        Log.v("Erro", "td");
+                            Log.v("Erro", "td");
 
-                        Log.v("Erro", "td");
+                            Log.v("Erro", "td");
 
-                        if(lista.size() > 0){
-                            requestedImage.setVisibility(View.VISIBLE);
-                            notificationLayout.setVisibility(View.VISIBLE);
+                            if (lista.size() > 0) {
+                                requestedImage.setVisibility(View.VISIBLE);
+                                notificationLayout.setVisibility(View.VISIBLE);
 
-                            notificationText.setText(lista.get(lista.size() -1).getSender());
-                            notificationDate.setText(lista.get(lista.size() -1).getDate());
-                            requestedImage.setVisibility(View.VISIBLE);
-                            Glide.with(getContext()).load("https://firebasestorage.googleapis.com/v0/b/mom-for-one-day.appspot.com/o/images%2F%20%2B%20a4ct2t6lhj6ipksaot8ctq8u6s.jpg?alt=media&token=aecb50a2-3a45-4244-8e64-a85afdac1825").into(requestedImage);
-//                             Picasso.with(getContext())
-//                                 .load(lista.get(lista.size() -1).getImage())
-//                            .resize(200,200)
-//                                .centerCrop().into(requestedImage);
+                                notificationText.setText(lista.get(lista.size() - 1).getSender());
+                                notificationDate.setText(lista.get(lista.size() - 1).getDate());
+                                requestedImage.setVisibility(View.VISIBLE);
+                                Log.v("Erro", "https://firebasestorage.googleapis.com/v0/b/mom-for-one-day.appspot.com/o/images%2F+%2B+a4ct2t6lhj6ipksaot8ctq8u6s.jpg?alt=media&token=aecb50a2-3a45-4244-8e64-a85afdac1825");
+                                Log.v("Erro", lista.get(lista.size() - 1).getImage().toString());
+                                Glide.with(getContext()).load(lista.get(lista.size() - 1).getImage().toString()).into(requestedImage);
+                                //                             Picasso.with(getContext())
+                                //                                 .load(lista.get(lista.size() -1).getImage())
+                                //                            .resize(200,200)
+                                //                                .centerCrop().into(requestedImage);
+                            }
+                        }catch (Exception e){
+                            
                         }
 
 
