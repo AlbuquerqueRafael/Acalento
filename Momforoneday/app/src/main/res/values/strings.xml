@@ -2,7 +2,7 @@
     <string name="app_name">Acalento</string>
     <string name="title_contracts">Contratos</string>
     <string name="title_home">Horários</string>
-    <string name="title_config">Configurações</string>
+    <string name="title_config">Sair</string>
 
 
 </resources>

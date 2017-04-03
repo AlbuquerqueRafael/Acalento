@@ -18,6 +18,7 @@ import com.firebase.client.core.Tag;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.momforoneday.momforoneday.model.Caregiver;
 import com.momforoneday.momforoneday.model.Contract;
@@ -48,7 +49,9 @@ public class FirebaseController {
 
         final FirebaseStorage storage = FirebaseStorage.getInstance();
 
-        storage.getReference().child(contract.getCaregiver()).putFile(data.getData()).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        StorageReference riversRef = storage.getReference().child(contract.getCaregiver());
+
+        riversRef.putFile(data.getData()).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 storage.getReference().child(contract.getCaregiver()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {

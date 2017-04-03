@@ -11,9 +11,9 @@
         android:icon="@drawable/ic_receipt_black_24dp"
         android:title="@string/title_contracts" />
 
-    <!--<item
+    <item
         android:id="@+id/navigation_config"
         android:icon="@drawable/ic_account_circle_black_24dp"
-        android:title="@string/title_config" />-->
+        android:title="@string/title_config" />
 
 </menu>
