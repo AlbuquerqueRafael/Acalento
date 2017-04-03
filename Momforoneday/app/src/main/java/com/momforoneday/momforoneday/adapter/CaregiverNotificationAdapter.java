@@ -1,23 +1,34 @@
 package com.momforoneday.momforoneday.adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.momforoneday.momforoneday.R;
+import com.momforoneday.momforoneday.holder.CarregiverHolder;
+import com.momforoneday.momforoneday.model.Caregiver;
 import com.momforoneday.momforoneday.model.Notification;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * Created by Rafael on 4/1/2017.
  */
 
-public class CaregiverNotificationAdapter extends RecyclerView.Adapter {
+public class CaregiverNotificationAdapter extends RecyclerView.Adapter<CarregiverHolder> {
 
     private List<Notification> notificationList;
     private Context context;
@@ -28,20 +39,17 @@ public class CaregiverNotificationAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public CarregiverHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(context).inflate(R.layout.list_notification, parent, false);
 
-        Holder holder = new Holder(view);
+        CarregiverHolder holder = new CarregiverHolder(view);
 
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
-
-        Holder holder = (Holder) viewHolder;
-
+    public void onBindViewHolder(CarregiverHolder viewHolder, int position) {
         final Notification currentNotification = notificationList.get(position);
 
         String text = "";
@@ -61,8 +69,28 @@ public class CaregiverNotificationAdapter extends RecyclerView.Adapter {
 
 
 
-        holder.notificationText.setText(currentNotification.getSender());
-        holder.notificationDate.setText(currentNotification.getDate());
+        viewHolder.notificationText.setText(currentNotification.getSender());
+        viewHolder.notificationDate.setText(currentNotification.getDate());
+
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+                builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+
+                builder.setMessage("Por favor, me mande uma foto");
+                builder.show();
+
+            }
+        });
 
     }
 
@@ -77,23 +105,3 @@ public class CaregiverNotificationAdapter extends RecyclerView.Adapter {
 }
 
 
-class Holder extends RecyclerView.ViewHolder {
-
-    final TextView notificationText;
-    final TextView notificationDate;
-
-    public Holder(View view) {
-        super(view);
-
-        notificationText = (TextView) view.findViewById(R.id.user_notification);
-        notificationText.setSelected(true);
-        notificationText.setEllipsize(TextUtils.TruncateAt.MARQUEE);
-        notificationText.setSingleLine(true);
-        notificationText.setMarqueeRepeatLimit(5);
-        notificationText.setSelected(true);
-
-        notificationDate = (TextView) view.findViewById(R.id.notification_date);
-
-    }
-
-}

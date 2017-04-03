@@ -72,27 +72,31 @@ public class RecentNotificationsFragment extends Fragment {
 
             @Override
             public void onSuccess(List<Notification> lista) {
-                notificationList = new ArrayList<>();
+                try {
+                    notificationList = new ArrayList<>();
 
-                for (Notification n : lista) {
-                    notificationList.add(n);
-                }
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-
-                builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    for (int i = lista.size() - 1; i >= 1; i--) {
+                        notificationList.add(lista.get(i));
                     }
-                });
 
-                recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler);
-                recyclerView.setAdapter(new NotificationAdapter(notificationList, getContext(), (AppCompatActivity) getActivity()));
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
-                RecyclerView.LayoutManager layout = new LinearLayoutManager(getContext(),
-                        LinearLayoutManager.VERTICAL, false);
+                    builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    });
 
-                recyclerView.setLayoutManager(layout);
+                    recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler);
+                    recyclerView.setAdapter(new NotificationAdapter(notificationList, getContext(), (AppCompatActivity) getActivity()));
+
+                    RecyclerView.LayoutManager layout = new LinearLayoutManager(getContext(),
+                            LinearLayoutManager.VERTICAL, false);
+
+                    recyclerView.setLayoutManager(layout);
+                }catch (Exception e){
+
+                }
 
             }
         });

@@ -71,6 +71,7 @@ public class ContractRequestFragment extends Fragment {
                 contract.setStatus("Aceito");
 
                 FirebaseController.setContract(contract);
+                contract_layout.setVisibility(View.GONE);
             }
         });
 
@@ -82,6 +83,7 @@ public class ContractRequestFragment extends Fragment {
                 contract.setStatus("Rejeitado");
 
                 FirebaseController.setContract(contract);
+                contract_layout.setVisibility(View.GONE);
             }
         });
 

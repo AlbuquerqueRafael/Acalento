@@ -95,33 +95,12 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationHolder
                 builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
                     }
                 });
 
-                LayoutInflater infl = (LayoutInflater) context.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
-
-                View imageView = infl.inflate(R.layout.image_dialog, null);
-                ImageView photoImage = (ImageView) imageView.findViewById(R.id.photo_baby);
-
-
-                Log.v("Erro",currentNotification.getImage().substring(currentNotification.getImage().length() - 1));
-                byte[] decodedString = Base64.decode(currentNotification.getImage(), Base64.DEFAULT);
-                Log.v("Erro", Arrays.toString(decodedString));
-                byte[] ss = Base64.decode(currentNotification.getImage(), Base64.NO_WRAP);
-                Log.v("Erro", Arrays.toString(ss));
-
-                Bitmap imageBitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-
-                //imageBitmap = ImageProvider.convertToBitmap(currentNotification.getImage());
-
-                photoImage.setBackgroundColor(Color.WHITE);
-
-                photoImage.setImageBitmap(imageBitmap);
-                photoImage.setBackgroundColor(Color.WHITE);
-
-                Log.v("Erro", "Uno");
+                builder.setMessage(currentNotification.getText());
                 builder.show();
-                Log.v("Erro", "Dono");
             }
         });
 

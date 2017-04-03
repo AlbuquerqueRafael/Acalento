@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,6 +28,13 @@ import com.momforoneday.momforoneday.MainActivity;
 import com.momforoneday.momforoneday.R;
 import com.momforoneday.momforoneday.adapter.CaregiverAdapter;
 import com.momforoneday.momforoneday.adapter.CaregiverNotificationAdapter;
+import com.momforoneday.momforoneday.adapter.NotificationAdapter;
+import com.momforoneday.momforoneday.controller.FirebaseController;
+import com.momforoneday.momforoneday.controller.OnGetCaregiverListener;
+import com.momforoneday.momforoneday.controller.OnNotificationGetDataListener;
+import com.momforoneday.momforoneday.model.Caregiver;
+import com.momforoneday.momforoneday.model.Contract;
+import com.momforoneday.momforoneday.model.Notification;
 import com.momforoneday.momforoneday.service.AppService;
 import com.squareup.picasso.Picasso;
 
@@ -39,6 +47,8 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.List;
 
 import static android.R.attr.dial;
 import static android.R.attr.path;
@@ -58,20 +68,21 @@ public class NotificationFragment extends Fragment {
     private String text = "";
     private ImageButton imageButton;
     private File image;
+    private TextView textview;
+
+    private List<Notification> notificationList;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         rootView = inflater.inflate(R.layout.fragment_notification, container, false);
 
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.list_notification);
-        recyclerView.setAdapter(new CaregiverNotificationAdapter(AppService.getCregiverNotification(), getContext()));
-
-        RecyclerView.LayoutManager layout = new LinearLayoutManager(getContext(),
-                LinearLayoutManager.VERTICAL, false);
-
-        recyclerView.setLayoutManager(layout);
         imageButton = (ImageButton) rootView.findViewById(R.id.baby_photo_button);
+        textview = (TextView) rootView.findViewById(R.id.contract_text);
+
+        textview.setText("Contrato inativo");
+        imageButton.setVisibility(View.GONE);
 
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,6 +90,9 @@ public class NotificationFragment extends Fragment {
                 startIntentImageCapture();
             }
         });
+
+        checkValidContract();
+        //initNotificationsList();
 
         return rootView;
     }
@@ -93,7 +107,7 @@ public class NotificationFragment extends Fragment {
 
             image = new File(pathe, new BigInteger(130, random).toString(32) + ".jpeg");
             path = Uri.fromFile(image);
-            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, path);
+           // cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, path);
             getActivity().startActivityForResult(cameraIntent, CAPTURE_IMAGE_REQUEST_CODE);
             pathe.delete();
             image.delete();
@@ -101,6 +115,56 @@ public class NotificationFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void initNotificationsList(){
+        FirebaseController.retrieveNotifications(AppService.getContractedCaregiver(), new OnNotificationGetDataListener() {
+            @Override
+            public void onStart() {}
+
+            @Override
+            public void onSuccess(List<Notification> lista) {
+                notificationList = new ArrayList<>();
+
+                for(int i = lista.size() - 1; i >= 0; i--){
+                    notificationList.add(lista.get(i));
+                }
+
+                recyclerView = (RecyclerView) rootView.findViewById(R.id.list_notification);
+                recyclerView.setAdapter(new CaregiverNotificationAdapter(notificationList, getContext()));
+
+                RecyclerView.LayoutManager layout = new LinearLayoutManager(getContext(),
+                        LinearLayoutManager.VERTICAL, false);
+
+                recyclerView.setLayoutManager(layout);
+
+            }
+        });
+    }
+
+    private void checkValidContract(){
+        FirebaseController.getCaregiverLogged(new OnGetCaregiverListener() {
+            @Override
+            public void onStart() {
+            }
+
+            @Override
+            public void onSuccess(Caregiver cg) {
+                Caregiver caregiver = cg;
+                Contract contract = caregiver.getContract();
+
+                if(!isPendente(caregiver)){
+                    textview.setText("Contrato ativo");
+                    imageButton.setVisibility(View.VISIBLE);
+                    initNotificationsList();
+                }
+            }
+        });
+
+    }
+
+    private static boolean isPendente(Caregiver caregiver) {
+        return caregiver.getContract().getStatus().equals("Pendente");
     }
 
 

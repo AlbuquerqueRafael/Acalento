@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.momforoneday.momforoneday.controller.FirebaseController;
 import com.momforoneday.momforoneday.fragment.ContractsFragment;
 import com.momforoneday.momforoneday.model.Caregiver;
 import com.momforoneday.momforoneday.model.Comment;
@@ -119,7 +121,7 @@ public class AppService {
                     dataJson.put("body",body);
                     dataJson.put("title",title);
                     json.put("notification",dataJson);
-                    json.put("to", "fZxdu_X5yP0:APA91bHq1elfi1_b3ffHEyGN4h4WCahNa0E_JWbfwnhKvsgxn2dltWBTF88NeClFhYJDKCnWZX573YiBDTLwVdtCDuoIsFn81lcmnKNwDSp2-UdEtevyCHIqGpSJo3k0rk-w8GYA8qqa");
+                    json.put("to", reg_token);
                     RequestBody body = RequestBody.create(JSON, json.toString());
                     Request request = new Request.Builder()
                             .header("Authorization","key="+

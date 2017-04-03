@@ -1,14 +1,18 @@
 package com.momforoneday.momforoneday.fragment;
 
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +21,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.momforoneday.momforoneday.R;
+import com.momforoneday.momforoneday.adapter.CaregiverNotificationAdapter;
 import com.momforoneday.momforoneday.adapter.NotificationAdapter;
 import com.momforoneday.momforoneday.controller.FirebaseController;
 import com.momforoneday.momforoneday.controller.OnNotificationGetDataListener;
@@ -45,8 +51,10 @@ public class ContractsFragment extends Fragment {
     private RelativeLayout notificationLayout;
     private TextView notificationDate;
     private FloatingActionButton perfilButton;
+    private FloatingActionButton seePhoto;
     private ImageView requestedImage;
     private TextView recentNotifications;
+    private TextView requestLastPic;
     private List<Notification> notificationList;
     private BottomNavigationView navigationBar;
     private View gradientView;
@@ -60,11 +68,13 @@ public class ContractsFragment extends Fragment {
         caregiverName = (TextView) rootView.findViewById(R.id.caregiver_name);
         contractStatus = (ImageView) rootView.findViewById(R.id.contract_status);
         requestImageButton = (TextView) rootView.findViewById(R.id.request_image);
+        requestLastPic = (TextView) rootView.findViewById(R.id.show_last_pict);
         perfilButton = (FloatingActionButton) rootView.findViewById(R.id.perfil_btn);
         requestedImage = (ImageView) rootView.findViewById(R.id.image_to_show);
         recentNotifications = (TextView) rootView.findViewById(R.id.recent_notifications);
         notificationText = (TextView) rootView.findViewById(R.id.notification_text);
         notificationDate = (TextView) rootView.findViewById(R.id.notification_date);
+
         notificationLayout = (RelativeLayout) rootView.findViewById(R.id.notification_layout);
 
         navigationBar = (BottomNavigationView) getActivity().findViewById(R.id.navigation);
@@ -73,6 +83,8 @@ public class ContractsFragment extends Fragment {
         navigationBar.setVisibility(View.VISIBLE);
         gradientView.setVisibility(View.VISIBLE);
 
+        requestedImage.setVisibility(View.GONE);
+        notificationLayout.setVisibility(View.GONE);
         recentNotifications.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,10 +117,46 @@ public class ContractsFragment extends Fragment {
             }
         });
 
-        requestedImage.setVisibility(View.GONE);
-        notificationLayout.setVisibility(View.GONE);
+        requestLastPic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseController.retrieveNotifications(AppService.getContractedCaregiver(), new OnNotificationGetDataListener() {
+                    @Override
+                    public void onStart() {}
 
-        setUpRecycler();
+                    @Override
+                    public void onSuccess(List<Notification> lista) {
+                        notificationList = new ArrayList<>();
+                        Log.v("Erro", "td");
+                        Log.v("Erro", "td");
+
+                        Log.v("Erro", "td");
+
+                        Log.v("Erro", "td");
+
+                        if(lista.size() > 0){
+                            requestedImage.setVisibility(View.VISIBLE);
+                            notificationLayout.setVisibility(View.VISIBLE);
+
+                            notificationText.setText(lista.get(lista.size() -1).getSender());
+                            notificationDate.setText(lista.get(lista.size() -1).getDate());
+                            requestedImage.setVisibility(View.VISIBLE);
+                            Glide.with(getContext()).load("https://firebasestorage.googleapis.com/v0/b/mom-for-one-day.appspot.com/o/images%2F%20%2B%20a4ct2t6lhj6ipksaot8ctq8u6s.jpg?alt=media&token=aecb50a2-3a45-4244-8e64-a85afdac1825").into(requestedImage);
+//                             Picasso.with(getContext())
+//                                 .load(lista.get(lista.size() -1).getImage())
+//                            .resize(200,200)
+//                                .centerCrop().into(requestedImage);
+                        }
+
+
+                    }
+                });
+            }
+        });
+
+
+
+        //setUpRecycler();
 
         if (AppService.getContractedCaregiver() != null) {
 
@@ -119,68 +167,16 @@ public class ContractsFragment extends Fragment {
             checkStatus(caregiver);
 
             if (AppService.getLastRequestedPhoto() != null) {
-                requestedImage.setVisibility(View.VISIBLE);
+                //requestedImage.setVisibility(View.VISIBLE);
 
-                Picasso.with(getContext())
-                        .load(AppService.getLastRequestedPhoto())
-                        .resize(260, 200)
-                        .centerCrop().into(requestedImage);
+//                Picasso.with(getContext())
+//                        .load(AppService.getLastRequestedPhoto())
+//                        .resize(260, 200)
+//                        .centerCrop().into(requestedImage);
             }
         }
 
         return rootView;
-    }
-
-    private void setUpRecycler() {
-        FirebaseController.retrieveNotifications(AppService.getContractedCaregiver(), new OnNotificationGetDataListener() {
-            @Override
-            public void onStart() {
-            }
-
-            @Override
-            public void onSuccess(List<Notification> lista) {
-                notificationList = new ArrayList<>();
-
-                for (Notification n : lista) {
-                    notificationList.add(n);
-                }
-
-                if (notificationList.isEmpty()){
-                    notificationLayout.setVisibility(View.GONE);
-                } else {
-                    notificationLayout.setVisibility(View.VISIBLE);
-                }
-
-                String text = "";
-                String status = "";
-
-                if (notificationList.size() > 0) {
-                    status = notificationList.get(notificationList.size() - 1).getText();
-
-                    if (status.equals("comendo")) {
-                        text = getEmojiByUnicode(0x1F37C) + "  Mamãe, estou comendo! Nham nham";
-                    } else if (status.equals("chorando")) {
-                        text = getEmojiByUnicode(0x1F62D) + "  Mamãeeee, estou chorando! Buáááá";
-                    } else if (status.equals("brincando")) {
-                        text = getEmojiByUnicode(0x1F61D) + "  Olha mamãe, estou brincando! Hihi";
-                    } else if (status.equals("remedio")) {
-                        text = getEmojiByUnicode(0x1F48A) + "  Mamãe, estou tomando o remédio! Argh";
-                    } else if (status.equals("dormindo")) {
-                        text = getEmojiByUnicode(0x1F634) + "  Mamãe, estou indo dormir! Zzzzz";
-                    }
-
-                    notificationText.setText(text);
-                    notificationText.setSelected(true);
-                    notificationText.setEllipsize(TextUtils.TruncateAt.MARQUEE);
-                    notificationText.setSingleLine(true);
-                    notificationText.setMarqueeRepeatLimit(5);
-                    notificationText.setSelected(true);
-
-                    notificationDate.setText(notificationList.get(notificationList.size()-1).getDate());
-                }
-
-            }
-        });
     }
 
     private String getEmojiByUnicode(int unicode){
@@ -189,26 +185,20 @@ public class ContractsFragment extends Fragment {
 
 
     private void requestImage(){
-        FirebaseController.requestImage(AppService.getContractedCaregiver().getContract(), new onGetPhotoListener() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+        builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
             @Override
-            public void onStart() {
-
-            }
-
-            @Override
-            public void onSuccess(String url) {
-
-                requestedImage.setVisibility(View.VISIBLE);
-
-                Picasso.with(getContext())
-                        .load(url)
-                        .resize(260, 200)
-                        .centerCrop().into(requestedImage);
-
-                AppService.setLastRequestedPhoto(url);
-
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
             }
         });
+
+        builder.setMessage("Solicitação feito, logo mais você receberá uma notificação");
+        builder.show();
+
+        FirebaseController.requestPhoto(AppService.getContractedCaregiver().getContract());
     }
 
     private void checkStatus(Caregiver caregiver) {
@@ -225,5 +215,30 @@ public class ContractsFragment extends Fragment {
 //            contractStatus.setColorFilter(Color.GREEN, PorterDuff.Mode.MULTIPLY );
 //        }
 
+    }
+
+    private void initNotificationsList(){
+        FirebaseController.retrieveUserNotifications(AppService.getCurrentUser().getName(), new OnNotificationGetDataListener() {
+            @Override
+            public void onStart() {}
+
+            @Override
+            public void onSuccess(List<Notification> lista) {
+                notificationList = new ArrayList<>();
+
+                for(int i = lista.size() - 1; i >= 1; i--){
+                    notificationList.add(lista.get(i));
+                }
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+                builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+
+            }
+        });
     }
 }

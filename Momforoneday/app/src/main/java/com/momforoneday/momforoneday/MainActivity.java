@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.Manifest;
 import android.support.annotation.NonNull;
@@ -32,6 +33,7 @@ import com.momforoneday.momforoneday.fragment.NotificationFragment;
 import com.momforoneday.momforoneday.model.Notification;
 import com.momforoneday.momforoneday.service.AppService;
 import com.momforoneday.momforoneday.service.ExifUtil;
+import com.momforoneday.momforoneday.service.ImagePicker;
 import com.momforoneday.momforoneday.service.ImageProvider;
 import com.momforoneday.momforoneday.util.CircleTransform;
 
@@ -49,7 +51,8 @@ public class MainActivity extends AppCompatActivity {
     private boolean hasCameraPermission = false;
     private String text = "";
     private String image = "";
-    private boolean baba = false;
+    private boolean baba = true;
+    private Bitmap bpm;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -59,26 +62,31 @@ public class MainActivity extends AppCompatActivity {
             android.support.v4.app.FragmentTransaction fragmentTransaction;
 
             switch (item.getItemId()) {
-
                 case R.id.navigation_home:
                     fragmentTransaction =
                             getSupportFragmentManager().beginTransaction();
-                    if(baba){
-                        fragmentTransaction.replace(R.id.content, new NotificationFragment());
-                    }else{
                         fragmentTransaction.replace(R.id.content, new ContractListFragment());
-                    }
+
                     fragmentTransaction.commit();
                     return true;
 
                 case R.id.navigation_contracts:
                     fragmentTransaction =
                             getSupportFragmentManager().beginTransaction();
-                    if(baba){
-                        fragmentTransaction.replace(R.id.content, new ContractRequestFragment());
-                    }else{
                         fragmentTransaction.replace(R.id.content, new ContractsFragment());
-                    }
+                    fragmentTransaction.commit();
+                    return true;
+                case R.id.navigation_requests:
+                    fragmentTransaction =
+                            getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.content, new ContractRequestFragment());
+                    fragmentTransaction.commit();
+                    return true;
+                case R.id.navigation_active_contract:
+                    fragmentTransaction =
+                            getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.content, new NotificationFragment());
+
                     fragmentTransaction.commit();
                     return true;
             }
@@ -130,32 +138,10 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == NotificationFragment.CAPTURE_IMAGE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                Bitmap imageBitmap = null;
-                ContentResolver cr = this.getContentResolver();
-                try {
-                    imageBitmap = android.provider.MediaStore.Images.Media.getBitmap(cr, NotificationFragment.path);
-                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    imageBitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream);
-                    byte[] byteFormat = stream.toByteArray();
-                    image= Base64.encodeToString(byteFormat, Base64.DEFAULT);
-
-                    //imageView.setImageBitmap(bitmap);
-                    //imageBitmap = ExifUtil.rotateBitmap(imagePath, myBitmap);
-                    //  InputStream image_stream = this.getContentResolver().openInputStream(NotificationFragment.path);
-                    // imageBitmap = BitmapFactory.decodeStream(this.getContentResolver().openInputStream(NotificationFragment.path));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-
-
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                imageBitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream);
-                byte[] byteFormat = stream.toByteArray();
-                image= Base64.encodeToString(byteFormat, Base64.NO_WRAP);
+                bpm = ImagePicker.getImageFromResult(this, resultCode, data);
 
                // image = ImageProvider.convert(imageBitmap);
-                initInputTextBox();
+                initInputTextBox(data);
             }
         }
     }
@@ -268,7 +254,7 @@ public class MainActivity extends AppCompatActivity {
 
     // other 'case' lines to check for other
     // permissions this app might request
-    private void initInputTextBox(){
+    private void initInputTextBox(final Intent data){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Comentário: ");
@@ -284,12 +270,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 text = input.getText().toString();
+                FirebaseController.storageBabyImage(data, MainActivity.this, text, bpm);
 
 
-                Notification notification = new Notification("Gabriel, olha a foto do seu filhao",
-                        "Carla Ferreira", image);
-                FirebaseController.updateUserNotification(notification);
-                AppService.sendNotification("gg", "testando", "testando");
             }
             });
             builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
