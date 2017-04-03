@@ -30,7 +30,7 @@ import com.momforoneday.momforoneday.model.Contract;
 import com.momforoneday.momforoneday.model.Notification;
 import com.momforoneday.momforoneday.model.User;
 import com.momforoneday.momforoneday.service.AppService;
-
+import com.momforoneday.momforoneday.controller.OnGetPhotoListener;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -237,7 +237,7 @@ public class FirebaseController {
         caregiverReff.child(caregiver.getName()).setValue(caregiver);
     }
 
-    public static void requestImage(Contract contract, final onGetPhotoListener listener) {
+    public static void requestImage(Contract contract, final OnGetPhotoListener listener) {
         Firebase firebaseRef = getFirebase();
         Firebase photoRef = firebaseRef.child(CAREGIVERS).child(contract.getCaregiver()).child(CONTRACT).child(PHOTO);
 
