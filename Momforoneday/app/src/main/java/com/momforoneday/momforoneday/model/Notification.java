@@ -1,5 +1,7 @@
 package com.momforoneday.momforoneday.model;
 
+import android.media.Image;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -14,7 +16,7 @@ public class Notification {
     private String date;
     private String sender;
     private User receiver;
-
+    private String image;
     public Notification(){}
 
     public Notification(String text, String sender, User receiver) {
@@ -32,6 +34,7 @@ public class Notification {
         this.date = dateString + " às " + hourString;
     }
 
+    public String getImage() { return image;}
     public String getText() {
         return text;
     }
@@ -56,6 +59,7 @@ public class Notification {
         this.sender = sender;
     }
 
+    public void setImage(String image){ this.image = image;}
     public User getReceiver() {
         return receiver;
     }

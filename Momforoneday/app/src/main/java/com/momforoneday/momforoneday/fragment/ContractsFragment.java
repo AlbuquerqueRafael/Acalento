@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.momforoneday.momforoneday.R;
 import com.momforoneday.momforoneday.adapter.NotificationAdapter;
 import com.momforoneday.momforoneday.controller.FirebaseController;
@@ -198,11 +199,12 @@ public class ContractsFragment extends Fragment {
             public void onSuccess(String url) {
 
                 requestedImage.setVisibility(View.VISIBLE);
+                Glide.with(getContext()).load(url).into(requestedImage);
 
-                Picasso.with(getContext())
-                        .load(url)
-                        .resize(260, 200)
-                        .centerCrop().into(requestedImage);
+//                Picasso.with(getContext())
+//                        .load(url)
+//                        .resize(260, 200)
+//                        .centerCrop().into(requestedImage);
 
                 AppService.setLastRequestedPhoto(url);
 
