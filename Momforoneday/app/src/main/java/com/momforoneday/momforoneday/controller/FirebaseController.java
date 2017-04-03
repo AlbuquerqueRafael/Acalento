@@ -150,7 +150,7 @@ public class FirebaseController {
         Firebase firebaseRef = getFirebase();
         Firebase notificationReff = firebaseRef.child(CAREGIVERS).child(caregiver.getName()).child(CONTRACT).child(NOTIFICATIONS);
 
-        Notification not = new Notification("Olá, você poderia enviar uma foto do meu bebe",
+        Notification not = new Notification("brincando",
                 AppService.getContractedCaregiver().getName(), AppService.getCurrentUser(), FirebaseInstanceId.getInstance().getToken());
 
         List<Notification> notifications = caregiver.getContract().getNotifications();
